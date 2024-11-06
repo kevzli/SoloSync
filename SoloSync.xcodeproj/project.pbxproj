@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */; };
+		F218863A2CDAEDDB001B10C9 /* AddInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */; };
 		F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24ECC822CD89D9900A0A4EF /* AppDelegate.swift */; };
 		F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24ECC842CD89D9900A0A4EF /* SceneDelegate.swift */; };
 		F24ECC872CD89D9900A0A4EF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24ECC862CD89D9900A0A4EF /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPoint.swift; sourceTree = "<group>"; };
+		F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInfoViewController.swift; sourceTree = "<group>"; };
 		F24ECC7F2CD89D9900A0A4EF /* SoloSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoloSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F24ECC822CD89D9900A0A4EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F24ECC842CD89D9900A0A4EF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			children = (
 				F24ECC822CD89D9900A0A4EF /* AppDelegate.swift */,
 				F24ECC842CD89D9900A0A4EF /* SceneDelegate.swift */,
+				F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */,
 				F24ECC862CD89D9900A0A4EF /* ViewController.swift */,
 				F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */,
 				F24ECC882CD89D9A00A0A4EF /* Main.storyboard */,
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F24ECC872CD89D9900A0A4EF /* ViewController.swift in Sources */,
+				F218863A2CDAEDDB001B10C9 /* AddInfoViewController.swift in Sources */,
 				F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */,
 				F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */,
 				F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */,

@@ -14,9 +14,13 @@ class SelectedPoint: NSObject, MKAnnotation{
     let location: String
     let coordinate: CLLocationCoordinate2D
     
-    init(title: String?, location: String, coordinate: CLLocationCoordinate2D) {
+    init(title: String, location: String, coordinate: CLLocationCoordinate2D) {
         self.title = title
         self.location = location
         self.coordinate = coordinate
+    }
+    
+    var subtitle: String? {
+        return location
     }
 }

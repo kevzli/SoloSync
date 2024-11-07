@@ -17,7 +17,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(mapTap(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addPin(_:)))
         mapView.addGestureRecognizer(tapGesture)
     }
 
@@ -30,23 +30,46 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func addPin(_ sender: Any) {
-        let somePoint1 = SelectedPoint(title: "Some Place 1", location: "Famous Place", coordinate: CLLocationCoordinate2DMake(41.890158, 12.492185))
-        
-        mapView.addAnnotation(somePoint1)
+        let alert = UIAlertController(title: "Add New Location", message: "Tap a location on the map to add an annotation with details.", preferredStyle: .alert)
+                
+                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleAddPin(_:)))
+                    self.mapView.addGestureRecognizer(tapGesture)
+                }
+                
+                alert.addAction(okAction)
+                present(alert, animated: true, completion: nil)
     }
     
-    @objc func mapTap(_ sender: UITapGestureRecognizer) {
+    @objc func handleAddPin(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-        
-        // Present UI to add notes and pictures for the selected location
+               
+        mapView.removeGestureRecognizer(sender)
+               
         addInfo(for: coordinate)
     }
     
-    func addInfo(for coordinate: CLLocationCoordinate2D){
+    func addInfo(for coordinate: CLLocationCoordinate2D) {
         let addInfoViewController = AddInfoViewController()
-        
-        
-    }
+                addInfoViewController.coordinate = coordinate
+                present(addInfoViewController, animated: true) {
+                    if let locationInfo = LocationInfoManager.shared.currentLocationInfo {
+                        self.addAnnotation(for: locationInfo)
+                    }
+                }
+        }
+    
+    func addAnnotation(for locationInfo: LocationInfo) {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = locationInfo.coordinate
+            annotation.title = locationInfo.note
+            mapView.addAnnotation(annotation)
+            
+            if let image = locationInfo.image {
+                print("Received image: \(image)")
+
+            }
+        }
 }
 

@@ -7,10 +7,10 @@
 
 import Foundation
 import UIKit
-import MapKit
+import CoreLocation
 
 class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     var coordinate: CLLocationCoordinate2D?
     var noteTextField: UITextField!
     var selectedImage: UIImage?
@@ -33,7 +33,7 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
 
     private func setupAddImage() {
         let addImageButton = UIButton(type: .system)
-        addImageButton.frame = CGRect(x: 20, y: 150, width: view.frame.width - 50, height: 50)
+        addImageButton.frame = CGRect(x: 20, y: 170, width: view.frame.width - 50, height: 50)
         addImageButton.setTitle("Add Photo", for: .normal)
         addImageButton.addTarget(self, action: #selector(presentImagePicker), for: .touchUpInside)
         view.addSubview(addImageButton)
@@ -41,7 +41,7 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
 
     private func setupSaveButton() {
         let saveButton = UIButton(type: .system)
-        saveButton.frame = CGRect(x: 20, y: 220, width: view.frame.width - 50, height: 50)
+        saveButton.frame = CGRect(x: 20, y: 240, width: view.frame.width - 50, height: 50)
         saveButton.setTitle("Save", for: .normal)
         saveButton.addTarget(self, action: #selector(saveInfo), for: .touchUpInside)
         view.addSubview(saveButton)
@@ -55,7 +55,12 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
 
     @objc func saveInfo() {
-        guard let note = noteTextField.text else { return }
+        guard let coordinate = coordinate, let note = noteTextField.text, !note.isEmpty else {
+            return
+        }
+
+        LocationInfoManager.shared.currentLocationInfo = LocationInfo(coordinate: coordinate, note: note, image: selectedImage)
+        
         dismiss(animated: true, completion: nil)
     }
 

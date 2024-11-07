@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29375C5F2CDC7F49000D1584 /* ConnectSQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */; };
 		29F84B9F2CDB10470052CE91 /* DataConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F84B9E2CDB10470052CE91 /* DataConnection.swift */; };
 		F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */; };
 		F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectSQL.swift; sourceTree = "<group>"; };
 		29F84B9E2CDB10470052CE91 /* DataConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConnection.swift; sourceTree = "<group>"; };
 		F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoClass.swift; sourceTree = "<group>"; };
 		F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPoint.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */,
 				F24ECC862CD89D9900A0A4EF /* ViewController.swift */,
 				F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */,
+				29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */,
 				F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */,
 				F24ECC882CD89D9A00A0A4EF /* Main.storyboard */,
 				F24ECC8B2CD89D9A00A0A4EF /* Assets.xcassets */,
@@ -155,6 +158,7 @@
 				F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */,
 				F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */,
 				F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */,
+				29375C5F2CDC7F49000D1584 /* ConnectSQL.swift in Sources */,
 				F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */,
 				29F84B9F2CDB10470052CE91 /* DataConnection.swift in Sources */,
 			);

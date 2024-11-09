@@ -26,10 +26,10 @@ db.connect((err) => {
 
 // Insert user route
 app.post('/insert', (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
   
-  const query = 'INSERT INTO UsersInfo (username, password) VALUES (?, ?)';
-  const values = [username, password];
+  const query = 'INSERT INTO UsersInfo (username, password, email) VALUES (?, ?, ?)';
+  const values = [username, password, email];
 
   // Query function
   queryDatabase(query, values)
@@ -40,6 +40,20 @@ app.post('/insert', (req, res) => {
       res.status(500).json({ message: 'Error inserting user', error: err });
     });
 });
+
+// Share note
+app.post('/share', (req, res) =>{
+  const {user_id, coordinate, note, image_url} = req.body;
+  const query = 'INSERT INTO Shared (user_id, coordinate ,note, image_url) VALUES (?, ?, ?, ?)' 
+  const values = [user_id, coordinate, note, image_url]
+  queryDatabase(query, values)
+  .then((result) => {
+    res.status(200).json({ message: 'Shared successful', result });
+  })
+  .catch((err) => {
+    res.status(500).json({ message: 'Error share note', error: err });
+  });
+})
 
 // Query function
 function queryDatabase(query, values) {

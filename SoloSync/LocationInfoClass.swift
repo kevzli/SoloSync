@@ -29,58 +29,51 @@ class LocationInfoManager {
     private init() {}
     
     var currentLocationInfo: LocationInfo?
-
-    func saveLocationInfoToAPI(_ locationInfo: LocationInfo) {
-        currentLocationInfo = locationInfo
+    
+    func saveLocationInfoToAPI(_ locationInfo: LocationInfo, userId: Int = 2) {
+        // Convert coordinate to string
+        print("saveLocationInfoToAPI worked")
+        print(locationInfo)
+        let coordinateString = "\(locationInfo.coordinate.latitude),\(locationInfo.coordinate.longitude)"
         
-        guard let url = URL(string: "http://ec2-3-144-195-16.us-east-2.compute.amazonaws.com/api/add_location.php") else {
-            print("Invalid URL")
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let boundary = UUID().uuidString
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        let body = NSMutableData()
-        let mimeType = "image/jpeg"
-        
-        body.appendString("--\(boundary)\r\n")
-        body.appendString("Content-Disposition: form-data; name=\"note\"\r\n\r\n")
-        body.appendString("\(locationInfo.note)\r\n")
-        
-        body.appendString("--\(boundary)\r\n")
-        body.appendString("Content-Disposition: form-data; name=\"latitude\"\r\n\r\n")
-        body.appendString("\(locationInfo.coordinate.latitude)\r\n")
-
-        body.appendString("--\(boundary)\r\n")
-        body.appendString("Content-Disposition: form-data; name=\"longitude\"\r\n\r\n")
-        body.appendString("\(locationInfo.coordinate.longitude)\r\n")
-        
-        if let imageData = locationInfo.image?.jpegData(compressionQuality: 0.8) {
-            body.appendString("--\(boundary)\r\n")
-            body.appendString("Content-Disposition: form-data; name=\"image\"; filename=\"location.jpg\"\r\n")
-            body.appendString("Content-Type: \(mimeType)\r\n\r\n")
-            body.append(imageData)
-            body.appendString("\r\n")
-        }
-        
-        body.appendString("--\(boundary)--\r\n")
-        
-        request.httpBody = body as Data
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-                return
-            }
+        // Create a unique name for the image if it exists, otherwise default to nil
+        var imageName: String? = nil
+        var imageData: Data? = nil // Declare imageData with the correct type
+        if let image = locationInfo.image {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyyMMddHHmmss"
+            let timestamp = dateFormatter.string(from: Date())
             
-            if let data = data, let responseString = String(data: data, encoding: .utf8) {
-                print("Response: \(responseString)")
+            // Combine user ID, coordinate string, and timestamp for the image name
+            imageName = "\(userId)_\(coordinateString)_\(timestamp).jpg"
+            
+            // Convert the image to Data for storage or uploading, if needed
+            if let data = image.jpegData(compressionQuality: 0.8) {
+                imageData = data
+                print("Generated image name: \(imageName!)")
+                print("Image data size: \(imageData!.count) bytes")
             }
-        }.resume()
+        }
+        
+        // Asynchronously call `shareNote` at the end of this function
+        DispatchQueue.global().async {
+            let imageNameToUse = imageName ?? ""
+            let imageDataToUse = imageData
+            
+            // Pass imageData along with other parameters to `shareNote`
+            shareNote(user_id: userId, coordinate: coordinateString, note: locationInfo.note, imageName: imageNameToUse, imageUpload: imageDataToUse!) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let jsonResponse):
+                        print("Note shared successfully: \(jsonResponse)")
+                    case .failure(let error):
+                        print("Failed to share note: \(error)")
+                    }
+                }
+            }
+        }
     }
+    
+    
 }
 

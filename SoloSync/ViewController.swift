@@ -19,6 +19,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Do any additional setup after loading the view.
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addPin(_:)))
         mapView.addGestureRecognizer(tapGesture)
+        // insertUser(name: "Bob", password: "123456", email: "123@wustl.edu")
+        
     }
 
     @IBAction func changeMap(_ sender: Any) {
@@ -55,6 +57,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 addInfoViewController.coordinate = coordinate
                 present(addInfoViewController, animated: true) {
                     if let locationInfo = LocationInfoManager.shared.currentLocationInfo {
+                        print("called")
                         self.addAnnotation(for: locationInfo)
                     }
                 }

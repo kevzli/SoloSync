@@ -73,7 +73,57 @@ class LocationInfoManager {
             }
         }
     }
-    
+    func fetchAllAnnotations(completion: @escaping ([LocationInfo]) -> Void) {
+            // Replace "yourserver.com" with your actual server URL
+            guard let url = URL(string: "http://yourserver.com/get_all_annotations") else {
+                print("Invalid URL")
+                return
+            }
+
+            // Create a GET request
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let error = error {
+                    print("Error fetching annotations:", error)
+                    return
+                }
+
+                // Ensure data is not nil
+                guard let data = data else { return }
+
+                do {
+                    // Parse JSON response into an array of dictionaries
+                    if let jsonArray = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
+                        var annotations: [LocationInfo] = []
+
+                        // Iterate over each dictionary to convert to LocationInfo
+                        for json in jsonArray {
+                            if let coordinateString = json["coordinate"] as? String,
+                               let note = json["note"] as? String,
+                               let imageURL = json["image_url"] as? String {
+                                
+                                // Parse coordinate string (latitude,longitude)
+                                let coordinates = coordinateString.split(separator: ",")
+                                if let latitude = Double(coordinates[0]),
+                                   let longitude = Double(coordinates[1]) {
+                                    let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                                    
+                                    // Create LocationInfo object (image can be loaded from URL if needed)
+                                    let locationInfo = LocationInfo(coordinate: coordinate, note: note, image: nil)
+                                    annotations.append(locationInfo)
+                                }
+                            }
+                        }
+
+                        // Call completion handler on main thread to return annotations
+                        DispatchQueue.main.async {
+                            completion(annotations)
+                        }
+                    }
+                } catch {
+                    print("Error parsing annotations:", error)
+                }
+            }.resume()
+        }
     
 }
 

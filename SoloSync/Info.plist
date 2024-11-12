@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>I am using your carema</string>
+	<string>I am using your camera</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>I am adding to photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -12,10 +12,20 @@
 	<string>May I have your location</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>3.144.195.16</key>
+			<dict/>
+			<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+			<true/>
+			<key>NSIncludesSubdomains</key>
+			<true/>
 			<key>ec2-3-144-195-16.us-east-2.compute.amazonaws.com</key>
 			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>

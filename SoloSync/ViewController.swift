@@ -20,7 +20,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addPin(_:)))
         mapView.addGestureRecognizer(tapGesture)
         // insertUser(name: "Bob", password: "123456", email: "123@wustl.edu")
-        
+        LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
+                    for locationInfo in annotations {
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate = locationInfo.coordinate
+                        annotation.title = locationInfo.note
+                        self?.mapView.addAnnotation(annotation)
+                    }
+                }
     }
 
     @IBAction func changeMap(_ sender: Any) {

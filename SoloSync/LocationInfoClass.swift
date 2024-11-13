@@ -61,7 +61,7 @@ class LocationInfoManager {
             let imageDataToUse = imageData
             
             // Pass imageData along with other parameters to `shareNote`
-            shareNote(user_id: userId, coordinate: coordinateString, note: locationInfo.note, imageName: imageNameToUse, imageUpload: imageDataToUse!) { result in
+            shareNote(user_id: userId, coordinate: coordinateString, note: locationInfo.note, imageName: imageNameToUse, imageUpload: imageDataToUse) { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let jsonResponse):
@@ -73,57 +73,72 @@ class LocationInfoManager {
             }
         }
     }
+    
     func fetchAllAnnotations(completion: @escaping ([LocationInfo]) -> Void) {
-            // Replace "yourserver.com" with your actual server URL
-            guard let url = URL(string: "http://yourserver.com/get_all_annotations") else {
-                print("Invalid URL")
+        guard let url = URL(string: "http://localhost:3000/get_all_annotations") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Add body data if necessary
+        request.httpBody = try? JSONSerialization.data(withJSONObject: [:], options: [])
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching annotations:", error)
                 return
             }
 
-            // Create a GET request
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error {
-                    print("Error fetching annotations:", error)
-                    return
-                }
+            guard let data = data else {
+                print("No data received.")
+                return
+            }
 
-                // Ensure data is not nil
-                guard let data = data else { return }
+            // Print raw response data to debug
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("Raw response from server:", responseString)
+            }
 
-                do {
-                    // Parse JSON response into an array of dictionaries
-                    if let jsonArray = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
-                        var annotations: [LocationInfo] = []
+            do {
+                if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                    var annotations: [LocationInfo] = []
+                    for json in jsonArray {
+                        if let coordinateString = json["coordinate"] as? String,
+                           let note = json["note"] as? String {
 
-                        // Iterate over each dictionary to convert to LocationInfo
-                        for json in jsonArray {
-                            if let coordinateString = json["coordinate"] as? String,
-                               let note = json["note"] as? String,
-                               let imageURL = json["image_url"] as? String {
+                            let imageURL = json["imageurl"] as? String
+                            // Todo: Add reading image
+                            print("note:", note)
+                            print("imageURL:", imageURL ?? "No image URL")
+                            
+                            // Parse the coordinate
+                            let coordinates = coordinateString.split(separator: ",")
+                            if let latitude = Double(coordinates[0]), let longitude = Double(coordinates[1]) {
+                                let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                                 
-                                // Parse coordinate string (latitude,longitude)
-                                let coordinates = coordinateString.split(separator: ",")
-                                if let latitude = Double(coordinates[0]),
-                                   let longitude = Double(coordinates[1]) {
-                                    let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                                    
-                                    // Create LocationInfo object (image can be loaded from URL if needed)
-                                    let locationInfo = LocationInfo(coordinate: coordinate, note: note, image: nil)
-                                    annotations.append(locationInfo)
-                                }
+                                // Create LocationInfo object
+                                let locationInfo = LocationInfo(coordinate: coordinate, note: note, image: nil)  // You can handle image loading if needed
+                                
+                                annotations.append(locationInfo)
                             }
-                        }
-
-                        // Call completion handler on main thread to return annotations
-                        DispatchQueue.main.async {
-                            completion(annotations)
+                    
                         }
                     }
-                } catch {
-                    print("Error parsing annotations:", error)
+                    
+                    DispatchQueue.main.async {
+                        completion(annotations)
+                    }
+                } else {
+                    print("JSON response format is not as expected.")
                 }
-            }.resume()
-        }
-    
+            } catch {
+                print("Error parsing annotations:", error)
+            }
+        }.resume()
+    }
 }
 

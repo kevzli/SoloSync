@@ -20,7 +20,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addPin(_:)))
         mapView.addGestureRecognizer(tapGesture)
         // insertUser(name: "Bob", password: "123456", email: "123@wustl.edu")
+//        var locationTest: [LocationInfo] = [
+//            LocationInfo(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), note: "test", image: nil)
+//        ]
+//        LocationInfoManager.shared.saveLocationInfoToAPI(locationTest[0], userId: 2)
         LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
+                    print(annotations)
                     for locationInfo in annotations {
                         let annotation = MKPointAnnotation()
                         annotation.coordinate = locationInfo.coordinate

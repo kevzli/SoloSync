@@ -75,7 +75,7 @@ class LocationInfoManager {
     }
     
     func fetchAllAnnotations(completion: @escaping ([LocationInfo]) -> Void) {
-        guard let url = URL(string: "http://localhost:3000/get_all_annotations") else {
+        guard let url = URL(string: "http://3.144.195.16:3000/get_all_annotations") else {
             print("Invalid URL")
             return
         }

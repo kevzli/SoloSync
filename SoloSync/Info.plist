@@ -17,7 +17,10 @@
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>3.144.195.16</key>
-			<dict/>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 			<true/>
 			<key>NSIncludesSubdomains</key>

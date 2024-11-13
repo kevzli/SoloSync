@@ -10,7 +10,7 @@ import UIKit
 
 func insertUser(name: String, password: String, email: String) {
 
-    guard let url = URL(string: "http://localhost:3000/insert") else {
+    guard let url = URL(string: "http://3.144.195.16:3000/insert") else {
         print("Invalid URL")
         return
     }
@@ -58,7 +58,7 @@ func insertUser(name: String, password: String, email: String) {
 
 func shareNote(user_id: Int, coordinate: String, note: String, imageName: String, imageUpload: Data?, completion: @escaping (Result<[String: Any], Error>) -> Void) {
     // Part 1: Share Note
-    guard let url = URL(string: "http://localhost:3000/share") else {
+    guard let url = URL(string: "http://3.144.195.16:3000/share") else {
         print("Invalid URL")
         return
     }

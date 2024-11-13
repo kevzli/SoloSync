@@ -71,6 +71,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     if let locationInfo = LocationInfoManager.shared.currentLocationInfo {
                         print("called")
                         self.addAnnotation(for: locationInfo)
+                        LocationInfoManager.shared.saveLocationInfoToAPI(locationInfo, userId: 2)
                     }
                 }
         }

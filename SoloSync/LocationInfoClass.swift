@@ -33,12 +33,12 @@ class LocationInfoManager {
     func saveLocationInfoToAPI(_ locationInfo: LocationInfo, userId: Int = 2) {
         // Convert coordinate to string
         print("saveLocationInfoToAPI worked")
-        print(locationInfo)
         let coordinateString = "\(locationInfo.coordinate.latitude),\(locationInfo.coordinate.longitude)"
         
         // Create a unique name for the image if it exists, otherwise default to nil
         var imageName: String? = nil
         var imageData: Data? = nil // Declare imageData with the correct type
+    
         if let image = locationInfo.image {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyyMMddHHmmss"
@@ -46,13 +46,7 @@ class LocationInfoManager {
             
             // Combine user ID, coordinate string, and timestamp for the image name
             imageName = "\(userId)_\(coordinateString)_\(timestamp).jpg"
-            
-            // Convert the image to Data for storage or uploading, if needed
-            if let data = image.jpegData(compressionQuality: 0.8) {
-                imageData = data
-                print("Generated image name: \(imageName!)")
-                print("Image data size: \(imageData!.count) bytes")
-            }
+            uploadImageTPHP(image: image, imageName: imageName!)
         }
         
         // Asynchronously call `shareNote` at the end of this function
@@ -75,7 +69,7 @@ class LocationInfoManager {
     }
     
     func fetchAllAnnotations(completion: @escaping ([LocationInfo]) -> Void) {
-        guard let url = URL(string: "http://3.144.195.16:3000/get_all_annotations") else {
+        guard let url = URL(string:  "http://3.144.195.16:3000/get_all_annotations") else {
             print("Invalid URL")
             return
         }

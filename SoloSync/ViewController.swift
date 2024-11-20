@@ -20,22 +20,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addPin(_:)))
         mapView.addGestureRecognizer(tapGesture)
         // insertUser(name: "Z", password: "1234567", email: "1234@wustl.edu")
-        login(user_email: "1234@wustl.edu", user_password: "1234567")
+        // login(user_email: "1234@wustl.edu", user_password: "1234567")
        // updateUsername(user_email: "1234@wustl.edu", new_name: "Z")
 //        var locationTest: [LocationInfo] = [
 //            LocationInfo(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), note: "test", image: nil)
 //        ]
-//        LocationInfoManager.shared.saveLocationInfoToAPI(locationTest[0], userId: 2)
+//        LocationInfoManager.shared.saveLocationInfoToAPI(locationTest[0])
         
-//        LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
-//                    print(annotations)
-//                    for locationInfo in annotations {
-//                        let annotation = MKPointAnnotation()
-//                        annotation.coordinate = locationInfo.coordinate
-//                        annotation.title = locationInfo.note
-//                        self?.mapView.addAnnotation(annotation)
-//                    }
-//                }
+        LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
+                    print(annotations)
+                    for locationInfo in annotations {
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate = locationInfo.coordinate
+                        annotation.title = locationInfo.note
+                        self?.mapView.addAnnotation(annotation)
+                    }
+                }
     }
 
     @IBAction func changeMap(_ sender: Any) {
@@ -74,7 +74,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     if let locationInfo = LocationInfoManager.shared.currentLocationInfo {
                         print("called")
                         self.addAnnotation(for: locationInfo)
-                        LocationInfoManager.shared.saveLocationInfoToAPI(locationInfo, userId: 2)
+                        LocationInfoManager.shared.saveLocationInfoToAPI(locationInfo)
                     }
                 }
         }

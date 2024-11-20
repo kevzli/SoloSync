@@ -21,6 +21,8 @@ struct LocationInfo {
     var coordinate: CLLocationCoordinate2D
     var note: String
     var image: UIImage?
+    var creator: Int = -1
+    var noteId: Int = -1
 }
 
 class LocationInfoManager {
@@ -30,14 +32,21 @@ class LocationInfoManager {
     
     var currentLocationInfo: LocationInfo?
     
-    func saveLocationInfoToAPI(_ locationInfo: LocationInfo, userId: Int = 2) {
+    func saveLocationInfoToAPI(_ locationInfo: LocationInfo) {
         // Convert coordinate to string
         print("saveLocationInfoToAPI worked")
+        guard let userIdString = UserDefaults.standard.string(forKey: "userId"),
+              let userId = Int(userIdString) else {
+            print("No valid user ID found")
+            return
+        }
+        print("UserId found and converted to Int: \(userId)")
+        
         let coordinateString = "\(locationInfo.coordinate.latitude),\(locationInfo.coordinate.longitude)"
         
         // Create a unique name for the image if it exists, otherwise default to nil
         var imageName: String? = nil
-        var imageData: Data? = nil // Declare imageData with the correct type
+        let imageData: Data? = nil // Declare imageData with the correct type
     
         if let image = locationInfo.image {
             let dateFormatter = DateFormatter()
@@ -69,7 +78,7 @@ class LocationInfoManager {
     }
     
     func fetchAllAnnotations(completion: @escaping ([LocationInfo]) -> Void) {
-        guard let url = URL(string:  "http://3.144.195.16:3000/get_all_annotations") else {
+        guard let url = URL(string:  "http://localhost:3000/get_all_annotations") else {
             print("Invalid URL")
             return
         }
@@ -102,24 +111,35 @@ class LocationInfoManager {
                     var annotations: [LocationInfo] = []
                     for json in jsonArray {
                         if let coordinateString = json["coordinate"] as? String,
-                           let note = json["note"] as? String {
+                           let note = json["note"] as? String,
+                           let note_id = json["note_id"] as? Int,
+                           let creatorId = json["user_id"] as? Int
+                        {
 
                             let imageURL = json["imageurl"] as? String
                             // Todo: Add reading image
-                            print("note:", note)
-                            print("imageURL:", imageURL ?? "No image URL")
-                            
+                            if let imageURL = imageURL {
+                                fetchImage(ImgUrl: imageURL) { image in
+                                    if image != nil {
+                                        DispatchQueue.main.async {
+                                            // Todo: Add ImageView
+                                            print("fetch correct")
+                                        }
+                                    } else {
+                                        print("Failed to fetch the image from URL:", imageURL)
+                                    }
+                                }
+                            }
                             // Parse the coordinate
                             let coordinates = coordinateString.split(separator: ",")
                             if let latitude = Double(coordinates[0]), let longitude = Double(coordinates[1]) {
                                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                                 
                                 // Create LocationInfo object
-                                let locationInfo = LocationInfo(coordinate: coordinate, note: note, image: nil)  // You can handle image loading if needed
+                                let locationInfo = LocationInfo(coordinate: coordinate, note: note, image: nil, creator: creatorId, noteId: note_id)  // You can handle image loading if needed
                                 
                                 annotations.append(locationInfo)
                             }
-                    
                         }
                     }
                     

@@ -14,8 +14,16 @@ func insertUser(name: String, password: String, email: String) {
         print("Invalid URL")
         return
     }
-
+    
     var request = URLRequest(url: url)
+    
+    if let token = UserDefaults.standard.string(forKey: "userToken") {
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    } else {
+        print("No token found")
+        return
+    }
+    
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -162,6 +170,31 @@ func uploadImageTPHP(image: UIImage, imageName: String) {
     task.resume()
 }
 
+func fetchImage(ImgUrl: String, completion: @escaping (UIImage?) -> Void) {
+    let urlString = "http://ec2-3-144-195-16.us-east-2.compute.amazonaws.com/~ec2-user/images/\(ImgUrl).jpg"
+    
+    guard let url = URL(string: urlString) else {
+        print("Invalid URL")
+        completion(nil)
+        return
+    }
+    
+    URLSession.shared.dataTask(with: url) { data, response, error in
+        if let error = error {
+            print("Failed to fetch image:", error)
+            completion(nil)
+            return
+        }
+        
+        guard let data = data, let image = UIImage(data: data) else {
+            print("Failed to decode image data.")
+            completion(nil)
+            return
+        }
+        
+        completion(image)
+    }.resume()
+}
 
 func login(user_email: String, user_password: String) {
     guard let url = URL(string: "http://localhost:3000/login") else {
@@ -201,9 +234,13 @@ func login(user_email: String, user_password: String) {
                     print("JSON Response: \(jsonResponse)")
                     
                     // Check for token in the response
-                    if let token = jsonResponse["token"] as? String {
-                        // Store token securely for future requests
+                    if let token = jsonResponse["token"] as? String,
+                       let userId = jsonResponse["userId"] as? Int {
+                        // Store token and user_id securely for future use
                         UserDefaults.standard.set(token, forKey: "userToken")
+                        UserDefaults.standard.set(userId, forKey: "userId")
+                        print(userId)
+                        print("Login successful. Token and User ID stored.")
                     } else {
                         print("Token not found in the response.")
                     }

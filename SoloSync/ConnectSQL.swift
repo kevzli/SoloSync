@@ -311,3 +311,73 @@ func updateUsername(user_email: String, new_name: String) {
     
     task.resume()
 }
+
+func deleteNote(selectedNote:LocationInfo){
+    let noteId = selectedNote.noteId
+    let creatorId = selectedNote.creator
+    
+    guard let userIdString = UserDefaults.standard.string(forKey: "userId"),
+          let userId = Int(userIdString) else {
+        print("No valid user ID found")
+        return
+    }
+    if (userId != creatorId){
+        print("You are not creator")
+        return
+    }
+    
+    guard let url = URL(string: "http://localhost:3000/delete_note") else {
+        print("Invalid URL")
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    // Retrieve the token from UserDefaults
+    if let token = UserDefaults.standard.string(forKey: "userToken") {
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    } else {
+        print("No token found")
+        return
+    }
+    
+    let body: [String: Any] = ["note_id": noteId, "user_id": creatorId]
+    
+    do {
+        let jsonData = try JSONSerialization.data(withJSONObject: body, options: [])
+        request.httpBody = jsonData
+    } catch {
+        print("Error encoding JSON data: \(error)")
+        return
+    }
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            print("Error: \(error)")
+            return
+        }
+        
+        if let data = data {
+            // Print raw response data for debugging
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("Raw response: \(responseString)")
+            }
+            
+            // Parse the JSON response
+            do {
+                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    print("JSON Response: \(jsonResponse)")
+                } else {
+                    print("Response is not JSON format.")
+                }
+            } catch {
+                print("Error parsing response: \(error)")
+            }
+        }
+    }
+    
+    task.resume()
+    
+}

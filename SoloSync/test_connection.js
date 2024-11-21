@@ -161,6 +161,20 @@ app.post('/get_all_annotations', (req, res) => {
     });
 });
 
+app.post('/elete_note', (req, res) => {
+  const {note_id, user_id} = req.body;
+  const query = 'DELETE FROM Shared WHERE note_id = ? AND user_id = ?';
+  values = [note_id, user_id];
+
+  queryDatabase(query, values)
+  .then((result) => {
+    res.status(200).json({ message: 'Delete note successful', result });
+  })
+  .catch((err) => {
+    res.status(500).json({ message: 'Error delete note', error: err });
+  });
+
+});
 
 
 // Query function

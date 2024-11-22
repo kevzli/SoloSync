@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		29375C5F2CDC7F49000D1584 /* ConnectSQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */; };
 		29F84B9F2CDB10470052CE91 /* DataConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F84B9E2CDB10470052CE91 /* DataConnection.swift */; };
+		6FAC18DA2CE16E8900A60BD1 /* LocFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC18D92CE16E8900A60BD1 /* LocFrameView.swift */; };
+		6FAC18DC2CE16EFB00A60BD1 /* RoutesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC18DB2CE16EFB00A60BD1 /* RoutesViewController.swift */; };
+		6FAC18E02CE1B0A300A60BD1 /* RouteBtns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC18DF2CE1B0A300A60BD1 /* RouteBtns.swift */; };
+		6FAC18E22CE1D6F600A60BD1 /* CalRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC18E12CE1D6F600A60BD1 /* CalRoute.swift */; };
 		F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */; };
 		F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */; };
 		F218863A2CDAEDDB001B10C9 /* AddInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */; };
@@ -23,6 +27,10 @@
 /* Begin PBXFileReference section */
 		29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectSQL.swift; sourceTree = "<group>"; };
 		29F84B9E2CDB10470052CE91 /* DataConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConnection.swift; sourceTree = "<group>"; };
+		6FAC18D92CE16E8900A60BD1 /* LocFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocFrameView.swift; sourceTree = "<group>"; };
+		6FAC18DB2CE16EFB00A60BD1 /* RoutesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesViewController.swift; sourceTree = "<group>"; };
+		6FAC18DF2CE1B0A300A60BD1 /* RouteBtns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteBtns.swift; sourceTree = "<group>"; };
+		6FAC18E12CE1D6F600A60BD1 /* CalRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalRoute.swift; sourceTree = "<group>"; };
 		F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoClass.swift; sourceTree = "<group>"; };
 		F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPoint.swift; sourceTree = "<group>"; };
 		F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInfoViewController.swift; sourceTree = "<group>"; };
@@ -74,6 +82,10 @@
 				29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */,
 				F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */,
 				F24ECC882CD89D9A00A0A4EF /* Main.storyboard */,
+				6FAC18DB2CE16EFB00A60BD1 /* RoutesViewController.swift */,
+				6FAC18E12CE1D6F600A60BD1 /* CalRoute.swift */,
+				6FAC18DF2CE1B0A300A60BD1 /* RouteBtns.swift */,
+				6FAC18D92CE16E8900A60BD1 /* LocFrameView.swift */,
 				F24ECC8B2CD89D9A00A0A4EF /* Assets.xcassets */,
 				F24ECC8D2CD89D9A00A0A4EF /* LaunchScreen.storyboard */,
 				F24ECC902CD89D9A00A0A4EF /* Info.plist */,
@@ -154,13 +166,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F24ECC872CD89D9900A0A4EF /* ViewController.swift in Sources */,
+				6FAC18DA2CE16E8900A60BD1 /* LocFrameView.swift in Sources */,
 				F218863A2CDAEDDB001B10C9 /* AddInfoViewController.swift in Sources */,
 				F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */,
+				6FAC18DC2CE16EFB00A60BD1 /* RoutesViewController.swift in Sources */,
 				F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */,
 				F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */,
 				29375C5F2CDC7F49000D1584 /* ConnectSQL.swift in Sources */,
+				6FAC18E22CE1D6F600A60BD1 /* CalRoute.swift in Sources */,
 				F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */,
 				29F84B9F2CDB10470052CE91 /* DataConnection.swift in Sources */,
+				6FAC18E02CE1B0A300A60BD1 /* RouteBtns.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,7 +328,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 95Y8GTL6QA;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoloSync/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -340,7 +356,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 95Y8GTL6QA;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoloSync/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

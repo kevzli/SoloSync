@@ -192,10 +192,10 @@
             </objects>
             <point key="canvasLocation" x="1007" y="2875"/>
         </scene>
-        <!--View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="x0j-UI-NtW">
             <objects>
-                <viewController id="EU3-e8-PiP" sceneMemberID="viewController">
+                <viewController id="EU3-e8-PiP" customClass="ProfileViewController" customModule="SoloSync" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lPt-N7-0lT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

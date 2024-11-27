@@ -16,6 +16,7 @@
 		F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */; };
 		F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */; };
 		F218863A2CDAEDDB001B10C9 /* AddInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */; };
+		F230B7062CF711D1004C3811 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F230B7052CF711D1004C3811 /* LoginViewController.swift */; };
 		F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24ECC822CD89D9900A0A4EF /* AppDelegate.swift */; };
 		F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24ECC842CD89D9900A0A4EF /* SceneDelegate.swift */; };
 		F24ECC872CD89D9900A0A4EF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24ECC862CD89D9900A0A4EF /* ViewController.swift */; };
@@ -34,6 +35,7 @@
 		F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoClass.swift; sourceTree = "<group>"; };
 		F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPoint.swift; sourceTree = "<group>"; };
 		F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInfoViewController.swift; sourceTree = "<group>"; };
+		F230B7052CF711D1004C3811 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F24ECC7F2CD89D9900A0A4EF /* SoloSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoloSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F24ECC822CD89D9900A0A4EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F24ECC842CD89D9900A0A4EF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */,
 				F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */,
 				F24ECC882CD89D9A00A0A4EF /* Main.storyboard */,
+				F230B7052CF711D1004C3811 /* LoginViewController.swift */,
 				6FAC18DB2CE16EFB00A60BD1 /* RoutesViewController.swift */,
 				6FAC18E12CE1D6F600A60BD1 /* CalRoute.swift */,
 				6FAC18DF2CE1B0A300A60BD1 /* RouteBtns.swift */,
@@ -176,6 +179,7 @@
 				6FAC18E22CE1D6F600A60BD1 /* CalRoute.swift in Sources */,
 				F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */,
 				29F84B9F2CDB10470052CE91 /* DataConnection.swift in Sources */,
+				F230B7062CF711D1004C3811 /* LoginViewController.swift in Sources */,
 				6FAC18E02CE1B0A300A60BD1 /* RouteBtns.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

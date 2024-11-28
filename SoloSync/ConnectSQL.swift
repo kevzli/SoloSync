@@ -8,10 +8,9 @@
 import Foundation
 import UIKit
 
-func insertUser(name: String, password: String, email: String) {
-
+func insertUser(name: String, password: String, email: String, completion: @escaping (Result<String, Error>) -> Void) {
     guard let url = URL(string: "http://localhost:3000/insert") else {
-        print("Invalid URL")
+        completion(.failure(NSError(domain: "InvalidURL", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
         return
     }
     
@@ -20,47 +19,48 @@ func insertUser(name: String, password: String, email: String) {
     if let token = UserDefaults.standard.string(forKey: "userToken") {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     } else {
-        print("No token found")
+        completion(.failure(NSError(domain: "MissingToken", code: 0, userInfo: [NSLocalizedDescriptionKey: "No token found"])))
         return
     }
     
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+    
     let body: [String: Any] = ["username": name, "password": password, "email": email]
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: body, options: [])
         request.httpBody = jsonData
     } catch {
-        print("Error encoding JSON data: \(error)")
+        completion(.failure(error))
         return
     }
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         if let error = error {
-            print("Error: \(error)")
+            completion(.failure(error))
             return
         }
-
+        
         if let data = data {
-            // Print raw response data for debugging
-            if let responseString = String(data: data, encoding: .utf8) {
-                print("Raw response: \(responseString)")
-            }
-
             // Try to parse the response as JSON
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    print("JSON Response: \(jsonResponse)")
+                    if let message = jsonResponse["message"] as? String {
+                        completion(.success(message)) // Return success with the message
+                    } else {
+                        let error = NSError(domain: "ResponseError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No message in response"])
+                        completion(.failure(error))
+                    }
                 } else {
-                    print("Response is not JSON format.")
+                    let error = NSError(domain: "ResponseError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Response is not JSON format"])
+                    completion(.failure(error))
                 }
             } catch {
-                print("Error parsing response: \(error)")
+                completion(.failure(error))
             }
         }
     }
-
+    
     task.resume()
 }
 
@@ -196,9 +196,9 @@ func fetchImage(ImgUrl: String, completion: @escaping (UIImage?) -> Void) {
     }.resume()
 }
 
-func login(user_email: String, user_password: String) {
+func login(user_email: String, user_password: String, completion: @escaping (Result<String, Error>) -> Void) {
     guard let url = URL(string: "http://localhost:3000/login") else {
-        print("Invalid URL")
+        completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
         return
     }
     
@@ -212,13 +212,13 @@ func login(user_email: String, user_password: String) {
         let jsonData = try JSONSerialization.data(withJSONObject: body, options: [])
         request.httpBody = jsonData
     } catch {
-        print("Error encoding JSON data: \(error)")
+        completion(.failure(error))
         return
     }
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         if let error = error {
-            print("Error: \(error)")
+            completion(.failure(error))
             return
         }
         
@@ -233,29 +233,30 @@ func login(user_email: String, user_password: String) {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     print("JSON Response: \(jsonResponse)")
                     
-                    // Check for token in the response
+                    // Check for token and userId in the response
                     if let token = jsonResponse["token"] as? String,
                        let userId = jsonResponse["userId"] as? Int {
                         // Store token and user_id securely for future use
                         UserDefaults.standard.set(token, forKey: "userToken")
                         UserDefaults.standard.set(userId, forKey: "userId")
-                        print(userId)
                         print("Login successful. Token and User ID stored.")
+                        completion(.success("Login successful"))
                     } else {
-                        print("Token not found in the response.")
+                        completion(.failure(NSError(domain: "Token or User ID missing", code: 0, userInfo: nil)))
                     }
                 } else {
-                    print("Response is not JSON format.")
+                    completion(.failure(NSError(domain: "Invalid JSON format", code: 0, userInfo: nil)))
                 }
             } catch {
-                print("Error parsing response: \(error)")
+                completion(.failure(error))
             }
+        } else {
+            completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
         }
     }
     
     task.resume()
 }
-
 func updateUsername(user_email: String, new_name: String) {
     guard let url = URL(string: "http://localhost:3000/update_user") else {
         print("Invalid URL")

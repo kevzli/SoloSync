@@ -88,33 +88,32 @@ class LoginViewController: UIViewController {
             showAlert(title: "Error", message: "Please fill in all fields.")
             return
         }
+
+        var loginResult: Result<String, Error>?
         
-        let loginURL = URL(string: "http://ec2-3-144-195-16.us-east-2.compute.amazonaws.com/login")! // Replace with login endpoint
-        var request = URLRequest(url: loginURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let body: [String: Any] = ["email": email, "password": password]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        let semaphore = DispatchSemaphore(value: 0)
         
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            if let error = error {
-                self?.showAlert(title: "Login Failed", message: error.localizedDescription)
-                return
-            }
-            
-            guard let data = data, let responseString = String(data: data, encoding: .utf8) else {
-                self?.showAlert(title: "Login Failed", message: "Unexpected response.")
-                return
-            }
-            
-            if responseString.contains("success") {
-                DispatchQueue.main.async {
-                    self?.navigateToMainApp()
-                }
-            } else {
-                self?.showAlert(title: "Login Failed", message: "Invalid email or password.")
-            }
-        }.resume()
+        // Call the login function
+        login(user_email: email, user_password: password) { result in
+            loginResult = result
+            semaphore.signal()
+        }
+        
+        // Wait for the semaphore signal
+        semaphore.wait()
+        
+        // Handle the login result
+        switch loginResult {
+        case .success(let message):
+            print(message) // Login successful message
+            self.navigateToMainApp() // Navigate to the main app
+        case .failure(let error):
+            print("Login failed: \(error.localizedDescription)")
+            showAlert(title: "Login Failed", message: "Incorrect password")
+        case .none:
+            print("Unexpected error: No result from login.")
+            showAlert(title: "Error", message: "Unexpected error occurred.")
+        }
     }
     
     @objc private func handleSignup() {
@@ -123,33 +122,30 @@ class LoginViewController: UIViewController {
             showAlert(title: "Error", message: "Please fill in all fields.")
             return
         }
+        var SignupResult: Result<String, Error>?
+        let semaphore = DispatchSemaphore(value: 0)
         
-        let signupURL = URL(string: "http://ec2-3-144-195-16.us-east-2.compute.amazonaws.com/signup")! // Replace with signup endpoint
-        var request = URLRequest(url: signupURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let body: [String: Any] = ["email": email, "password": password]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        insertUser(name: "Momo", password: password, email: email) { result in
+            SignupResult = result
+            semaphore.signal()
+        }
         
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            if let error = error {
-                self?.showAlert(title: "Signup Failed", message: error.localizedDescription)
-                return
-            }
-            
-            guard let data = data, let responseString = String(data: data, encoding: .utf8) else {
-                self?.showAlert(title: "Signup Failed", message: "Unexpected response.")
-                return
-            }
-            
-            if responseString.contains("success") {
-                DispatchQueue.main.async {
-                    self?.navigateToMainApp()
-                }
-            } else {
-                self?.showAlert(title: "Signup Failed", message: responseString)
-            }
-        }.resume()
+        semaphore.wait()
+        
+        // Handle the login result
+        switch SignupResult {
+        case .success(let message):
+            print(message) // Login successful message
+            self.navigateToMainApp() // Navigate to the main app
+        case .failure(let error):
+            print("Signup failed: \(error.localizedDescription)")
+            showAlert(title: "SignUo Failed", message: error.localizedDescription)
+        case .none:
+            print("Unexpected error: No result from signup.")
+            showAlert(title: "Error", message: "Unexpected error occurred.")
+        }
+        
+        
     }
 
     private func showAlert(title: String, message: String) {
@@ -162,9 +158,15 @@ class LoginViewController: UIViewController {
 
     private func navigateToMainApp() {
         DispatchQueue.main.async {
-            let mainVC = ViewController()
-            mainVC.modalPresentationStyle = .fullScreen
-            self.present(mainVC, animated: true)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            // Instantiate the view controller with the correct Storyboard ID
+            if let mainTabBarController = storyboard.instantiateViewController(withIdentifier: "MainTabBarController") as? UITabBarController {
+                mainTabBarController.modalPresentationStyle = .fullScreen
+                self.present(mainTabBarController, animated: true)
+            } else {
+                print("Error: Could not load MainTabBarController from storyboard.")
+            }
         }
     }
 }

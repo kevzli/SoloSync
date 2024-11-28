@@ -17,6 +17,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addPin(_:)))
         mapView.addGestureRecognizer(tapGesture)
         // insertUser(name: "Z", password: "1234567", email: "1234@wustl.edu")

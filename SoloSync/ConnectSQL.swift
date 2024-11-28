@@ -9,19 +9,12 @@ import Foundation
 import UIKit
 
 func insertUser(name: String, password: String, email: String, completion: @escaping (Result<String, Error>) -> Void) {
-    guard let url = URL(string: "http://localhost:3000/insert") else {
+    guard let url = URL(string: "http://3.144.195.16:3000/insert") else {
         completion(.failure(NSError(domain: "InvalidURL", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
         return
     }
     
     var request = URLRequest(url: url)
-    
-    if let token = UserDefaults.standard.string(forKey: "userToken") {
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-    } else {
-        completion(.failure(NSError(domain: "MissingToken", code: 0, userInfo: [NSLocalizedDescriptionKey: "No token found"])))
-        return
-    }
     
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -66,7 +59,7 @@ func insertUser(name: String, password: String, email: String, completion: @esca
 
 func shareNote(user_id: Int, coordinate: String, note: String, imageName: String, imageUpload: Data?, completion: @escaping (Result<[String: Any], Error>) -> Void) {
     // Part 1: Share Note
-    guard let url = URL(string: "http://localhost:3000/share") else {
+    guard let url = URL(string: "http://3.144.195.16:3000/share") else {
         print("Invalid URL")
         return
     }
@@ -197,7 +190,7 @@ func fetchImage(ImgUrl: String, completion: @escaping (UIImage?) -> Void) {
 }
 
 func login(user_email: String, user_password: String, completion: @escaping (Result<String, Error>) -> Void) {
-    guard let url = URL(string: "http://localhost:3000/login") else {
+    guard let url = URL(string: "http://3.144.195.16:3000/login") else {
         completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
         return
     }
@@ -258,7 +251,7 @@ func login(user_email: String, user_password: String, completion: @escaping (Res
     task.resume()
 }
 func updateUsername(user_email: String, new_name: String) {
-    guard let url = URL(string: "http://localhost:3000/update_user") else {
+    guard let url = URL(string: "http://3.144.195.16:3000/update_user") else {
         print("Invalid URL")
         return
     }
@@ -327,7 +320,7 @@ func deleteNote(selectedNote:LocationInfo){
         return
     }
     
-    guard let url = URL(string: "http://localhost:3000/delete_note") else {
+    guard let url = URL(string: "http://3.144.195.16:3000/delete_note") else {
         print("Invalid URL")
         return
     }

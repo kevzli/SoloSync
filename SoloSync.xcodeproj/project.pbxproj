@@ -13,6 +13,11 @@
 		6FAC18DC2CE16EFB00A60BD1 /* RoutesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC18DB2CE16EFB00A60BD1 /* RoutesViewController.swift */; };
 		6FAC18E02CE1B0A300A60BD1 /* RouteBtns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC18DF2CE1B0A300A60BD1 /* RouteBtns.swift */; };
 		6FAC18E22CE1D6F600A60BD1 /* CalRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC18E12CE1D6F600A60BD1 /* CalRoute.swift */; };
+		7BD37FBB2CFB2AD1002E1557 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD37FBA2CFB2AD1002E1557 /* SearchViewController.swift */; };
+		7BD37FBF2CFB2B4F002E1557 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD37FBE2CFB2B4F002E1557 /* ContentView.swift */; };
+		7BD37FC12CFB2B81002E1557 /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD37FC02CFB2B81002E1557 /* SheetView.swift */; };
+		7BD37FC32CFB2BA4002E1557 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD37FC22CFB2BA4002E1557 /* LocationService.swift */; };
+		7BD37FC62CFB2BFA002E1557 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD37FC52CFB2BFA002E1557 /* ItemInfoView.swift */; };
 		F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */; };
 		F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */; };
 		F218863A2CDAEDDB001B10C9 /* AddInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */; };
@@ -34,6 +39,11 @@
 		6FAC18DB2CE16EFB00A60BD1 /* RoutesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesViewController.swift; sourceTree = "<group>"; };
 		6FAC18DF2CE1B0A300A60BD1 /* RouteBtns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteBtns.swift; sourceTree = "<group>"; };
 		6FAC18E12CE1D6F600A60BD1 /* CalRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalRoute.swift; sourceTree = "<group>"; };
+		7BD37FBA2CFB2AD1002E1557 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		7BD37FBE2CFB2B4F002E1557 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7BD37FC02CFB2B81002E1557 /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
+		7BD37FC22CFB2BA4002E1557 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		7BD37FC52CFB2BFA002E1557 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoClass.swift; sourceTree = "<group>"; };
 		F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPoint.swift; sourceTree = "<group>"; };
 		F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInfoViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +90,7 @@
 		F24ECC812CD89D9900A0A4EF /* SoloSync */ = {
 			isa = PBXGroup;
 			children = (
+				7BD37FBA2CFB2AD1002E1557 /* SearchViewController.swift */,
 				F24ECC822CD89D9900A0A4EF /* AppDelegate.swift */,
 				F24ECC842CD89D9900A0A4EF /* SceneDelegate.swift */,
 				F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */,
@@ -99,6 +110,10 @@
 				F24ECC8D2CD89D9A00A0A4EF /* LaunchScreen.storyboard */,
 				F24ECC902CD89D9A00A0A4EF /* Info.plist */,
 				29F84B9E2CDB10470052CE91 /* DataConnection.swift */,
+				7BD37FBE2CFB2B4F002E1557 /* ContentView.swift */,
+				7BD37FC02CFB2B81002E1557 /* SheetView.swift */,
+				7BD37FC22CFB2BA4002E1557 /* LocationService.swift */,
+				7BD37FC52CFB2BFA002E1557 /* ItemInfoView.swift */,
 			);
 			path = SoloSync;
 			sourceTree = "<group>";
@@ -180,10 +195,15 @@
 				F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */,
 				F230B7082CF72744004C3811 /* ProfileViewController.swift in Sources */,
 				6FAC18DC2CE16EFB00A60BD1 /* RoutesViewController.swift in Sources */,
+				7BD37FC32CFB2BA4002E1557 /* LocationService.swift in Sources */,
+				7BD37FC62CFB2BFA002E1557 /* ItemInfoView.swift in Sources */,
 				F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */,
+				7BD37FBF2CFB2B4F002E1557 /* ContentView.swift in Sources */,
 				F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */,
 				F22A59ED2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift in Sources */,
+				7BD37FC12CFB2B81002E1557 /* SheetView.swift in Sources */,
 				29375C5F2CDC7F49000D1584 /* ConnectSQL.swift in Sources */,
+				7BD37FBB2CFB2AD1002E1557 /* SearchViewController.swift in Sources */,
 				6FAC18E22CE1D6F600A60BD1 /* CalRoute.swift in Sources */,
 				F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */,
 				29F84B9F2CDB10470052CE91 /* DataConnection.swift in Sources */,

@@ -34,7 +34,7 @@ class LocationInfoManager {
     
     func saveLocationInfoToAPI(_ locationInfo: LocationInfo) {
         // Convert coordinate to string
-        print("saveLocationInfoToAPI worked")
+        // print("saveLocationInfoToAPI worked")
         guard let userIdString = UserDefaults.standard.string(forKey: "userId"),
               let userId = Int(userIdString) else {
             print("No valid user ID found")

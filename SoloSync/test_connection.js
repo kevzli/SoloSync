@@ -80,7 +80,7 @@ app.post('/login', (req, res) => {
         if (isMatch) {
           const token = jwt.sign({ userId: user.id, email: user.email }, SECRET_KEY, { expiresIn: TOKEN_EXPIRATION });
 
-          res.status(200).json({ message: 'Login Success', token, userId: user.id });
+          res.status(200).json({ message: 'Login Success', token, userId: user.id, username: user.username});
         } else {
           res.status(400).json({ message: 'Incorrect password' });
         }
@@ -161,7 +161,7 @@ app.post('/get_all_annotations', (req, res) => {
     });
 });
 
-app.post('/elete_note', (req, res) => {
+app.post('/delete_note', (req, res) => {
   const {note_id, user_id} = req.body;
   const query = 'DELETE FROM Shared WHERE note_id = ? AND user_id = ?';
   values = [note_id, user_id];

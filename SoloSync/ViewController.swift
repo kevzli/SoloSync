@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MKMapViewDelegate{
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var switchValue: UISwitch!
@@ -36,6 +36,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 //            LocationInfo(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), note: "test", image: nil)
 //        ]
 //        LocationInfoManager.shared.saveLocationInfoToAPI(locationTest[0])
+        mapView.delegate = self
         
         LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
                     print(annotations)
@@ -74,7 +75,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                
         mapView.removeGestureRecognizer(sender)
                
-        addInfo(for: coordinate)
+        LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
+                if let matchingAnnotation = annotations.first(where: {
+                    $0.coordinate.latitude == coordinate.latitude && $0.coordinate.longitude == coordinate.longitude
+                }) {
+                    //Matching annotation found
+                    DispatchQueue.main.async {
+                        let annotationDetailsVC = AnnotationDetailsViewController()
+                        //
+                        //populate new view controller with fetched data
+                        //
+                        self?.present(annotationDetailsVC, animated: true, completion: nil)
+                    }
+                } else {
+                    //No matching annotation, add a new pin
+                    DispatchQueue.main.async {
+                        self?.addInfo(for: coordinate)
+                    }
+                }
+            }
     }
     
     func addInfo(for coordinate: CLLocationCoordinate2D) {

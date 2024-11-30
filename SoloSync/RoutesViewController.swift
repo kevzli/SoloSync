@@ -2,52 +2,141 @@ import UIKit
 
 class RoutesViewController: UIViewController {
     
-    @IBOutlet weak var addBtn: UIButton!
-    @IBOutlet weak var theScroll: UIScrollView!
-    @IBOutlet weak var Locs: UIStackView!
-    @IBOutlet weak var theView: UIView!
-    
+    private let theScroll = UIScrollView()
+    private let theView = UIView()
+    private let Locs = UIStackView()
+    private let addBtn = UIButton(type: .system)
+    private let sort_arr = UISegmentedControl(items: ["Rating", "Popularity", "Category"])
+    private let est = UILabel()
+    private let recBtn = UIButton(type: .system)
+    private let btns = RouteBtns()
     private let calR = CalRoute()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientLayer.frame = view.bounds
-        let backgroundView = UIView(frame: view.bounds)
-        backgroundView.layer.addSublayer(gradientLayer)
-        view.addSubview(backgroundView)
-        view.sendSubviewToBack(backgroundView)
-        Locs.spacing = 10
-        setView()
-        addinit()
-        setSort()
+        view.backgroundColor = .white
+        
+        setupScrollView()
+        setupMainView()
+        setupStackView()
+        setupAddButton()
+        setupSortAndButtons()
+        addInitialLocations()
+    }
+    
+    private func setupScrollView() {
+        theScroll.translatesAutoresizingMaskIntoConstraints = false
         theScroll.isScrollEnabled = true
         theScroll.bounces = true
         theScroll.alwaysBounceVertical = true
+        view.addSubview(theScroll)
+        
+        NSLayoutConstraint.activate([
+            theScroll.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            theScroll.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            theScroll.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            theScroll.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
-    // Initially add start and end
-    private func addinit() {
-        let start = createLoc(title: "Start", placeholder: "Enter Start Location")
-        let end = createLoc(title: "End", placeholder: "Enter End Location")
+    private func setupMainView() {
+        theView.translatesAutoresizingMaskIntoConstraints = false
+        theScroll.addSubview(theView)
+        
+        NSLayoutConstraint.activate([
+            theView.leadingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.leadingAnchor),
+            theView.trailingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.trailingAnchor),
+            theView.topAnchor.constraint(equalTo: theScroll.contentLayoutGuide.topAnchor),
+            theView.bottomAnchor.constraint(equalTo: theScroll.contentLayoutGuide.bottomAnchor),
+            theView.widthAnchor.constraint(equalTo: theScroll.frameLayoutGuide.widthAnchor)
+        ])
+    }
+    
+    private func setupStackView() {
+        Locs.axis = .vertical
+        Locs.spacing = 10
+        Locs.alignment = .fill
+        Locs.translatesAutoresizingMaskIntoConstraints = false
+        theView.addSubview(Locs)
+        
+        NSLayoutConstraint.activate([
+            Locs.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
+            Locs.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
+            Locs.topAnchor.constraint(equalTo: theView.topAnchor, constant: 20)
+        ])
+    }
+    
+    private func setupAddButton() {
+        addBtn.setTitle("Add Stop", for: .normal)
+        addBtn.setTitleColor(.systemBlue, for: .normal)
+        addBtn.addTarget(self, action: #selector(addLocation), for: .touchUpInside)
+        addBtn.translatesAutoresizingMaskIntoConstraints = false
+        theView.addSubview(addBtn)
+        
+        NSLayoutConstraint.activate([
+            addBtn.topAnchor.constraint(equalTo: Locs.bottomAnchor, constant: 20),
+            addBtn.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
+            addBtn.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16)
+        ])
+    }
+    
+    private func setupSortAndButtons() {
+        sort_arr.selectedSegmentIndex = 0
+        sort_arr.translatesAutoresizingMaskIntoConstraints = false
+        
+        est.text = "Estimated Time: 1h 50m"
+        est.textAlignment = .center
+        est.translatesAutoresizingMaskIntoConstraints = false
+        
+        recBtn.setTitle("Show Rec Route", for: .normal)
+        recBtn.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
+        recBtn.setTitleColor(.white, for: .normal)
+        recBtn.layer.cornerRadius = 8
+        recBtn.addTarget(self, action: #selector(showRouteDetails), for: .touchUpInside)
+        recBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        theView.addSubview(sort_arr)
+        theView.addSubview(est)
+        theView.addSubview(recBtn)
+        theView.addSubview(btns)
+        
+        NSLayoutConstraint.activate([
+            sort_arr.topAnchor.constraint(equalTo: addBtn.bottomAnchor, constant: 40),
+            sort_arr.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
+            sort_arr.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
+            
+            est.topAnchor.constraint(equalTo: sort_arr.bottomAnchor, constant: 20),
+            est.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
+            est.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
+            
+            recBtn.topAnchor.constraint(equalTo: est.bottomAnchor, constant: 30),
+            recBtn.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 116),
+            recBtn.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -116),
+            recBtn.heightAnchor.constraint(equalToConstant: 44),
+            
+            btns.topAnchor.constraint(equalTo: recBtn.bottomAnchor, constant: 30),
+            btns.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
+            btns.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
+            btns.bottomAnchor.constraint(equalTo: theView.bottomAnchor, constant: -20)
+        ])
+    }
+    
+    private func addInitialLocations() {
+        let start = createLocationInput(title: "Start", placeholder: "Enter Start Location")
+        let end = createLocationInput(title: "End", placeholder: "Enter End Location")
         Locs.addArrangedSubview(start)
         Locs.addArrangedSubview(end)
     }
     
-    // Function to create a new location input
-    private func createLoc(title: String, placeholder: String) -> LocFrameView {
+    private func createLocationInput(title: String, placeholder: String) -> LocFrameView {
         let loc = LocFrameView()
         loc.configure(title: title, placeholder: placeholder)
         return loc
     }
     
-    // Action to add a new stop location
-    @IBAction func AddLoc(_ sender: UIButton) {
+    @objc private func addLocation() {
         let index = Locs.arrangedSubviews.count - 1
-        let stop = createLoc(title: "Stop \(index)", placeholder: "Enter Location")
+        let stop = createLocationInput(title: "Stop \(index)", placeholder: "Enter Location")
         
         stop.deleteAction = { [weak self, weak stop] in
             guard let self = self, let stop = stop else { return }
@@ -58,136 +147,37 @@ class RoutesViewController: UIViewController {
         Locs.insertArrangedSubview(stop, at: index)
     }
     
-    // Set constraints for the main view and stack view
-    private func setView() {
-        theView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            theView.leadingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.leadingAnchor),
-            theView.trailingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.trailingAnchor),
-            theView.topAnchor.constraint(equalTo: theScroll.contentLayoutGuide.topAnchor),
-            theView.bottomAnchor.constraint(equalTo: theScroll.contentLayoutGuide.bottomAnchor),
-            theView.widthAnchor.constraint(equalTo: theScroll.frameLayoutGuide.widthAnchor)
-        ])
-        
-        Locs.alignment = .fill
-        Locs.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            Locs.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
-            Locs.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
-            Locs.topAnchor.constraint(equalTo: theView.topAnchor, constant: 20)
-        ])
-        
-        addBtn.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            addBtn.topAnchor.constraint(equalTo: Locs.bottomAnchor, constant: 20),
-            addBtn.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
-            addBtn.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16)
-        ])
-    }
-    
-    // Initialize the sort segmented control
-    let sort_arr: UISegmentedControl = {
-        let its = UISegmentedControl(items: ["Rating", "Popularity", "Category"])
-        its.selectedSegmentIndex = 0
-        its.translatesAutoresizingMaskIntoConstraints = false
-        return its
-    }()
-    //label to display the est time
-    let est: UILabel = {
-        let l = UILabel()
-        l.text = "Estimated Time: 1h 50m"
-        l.textAlignment = .center
-        l.translatesAutoresizingMaskIntoConstraints = false
-        return l
-    }()
-    
-    //recommendation btn, call func to calculate the route
-    let recBtn: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Show Rec Route", for: .normal)
-        btn.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
-        btn.setTitleColor(.white, for: .normal)
-        btn.layer.cornerRadius = 8
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
-    }()
-    
-    //stackview of 4 btns on the bottom
-    let btns = RouteBtns()
-    
-    // Set constraints for the sort segmented control
-    private func setSort() {
-        theView.addSubview(sort_arr)
-        theView.addSubview(est)
-        theView.addSubview(recBtn)
-        theView.addSubview(btns)
-        
-        NSLayoutConstraint.activate([
-            //sort constraint
-            sort_arr.topAnchor.constraint(equalTo: addBtn.bottomAnchor, constant: 40),
-            sort_arr.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
-            sort_arr.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
-            
-            //est time constraint
-            est.topAnchor.constraint(equalTo: sort_arr.bottomAnchor, constant: 20),
-            est.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
-            est.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
-            //recommend btn constraint
-            recBtn.topAnchor.constraint(equalTo: est.bottomAnchor, constant: 30),
-            recBtn.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 116),
-            recBtn.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -116),
-            recBtn.heightAnchor.constraint(equalToConstant: 44),
-            //4 btns constraint
-            btns.topAnchor.constraint(equalTo: recBtn.bottomAnchor, constant: 30),
-            btns.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
-            btns.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
-            btns.bottomAnchor.constraint(equalTo: theView.bottomAnchor, constant: -20)
-        ])
-        
-        recBtn.addTarget(self, action: #selector(cal), for: .touchUpInside)
-    }
-    
-
-    
-    //cal to calculate estimate time of the route
-    @objc private func cal() {
-        //acquire start and end point
-        guard let s = Locs.arrangedSubviews.first as? LocFrameView,
-              let e = Locs.arrangedSubviews.last as? LocFrameView else {
-            est.text = "N/A"
-            return
-        }
-        
-        let start = s.t.text ?? ""
-        let end = e.t.text ?? ""
-        //check if there are stops, if there are, pass to CalRoute as an array
-        //first ignore the 1st and last stackview
-        let vs = Locs.arrangedSubviews
-
-        let vs2 = Array(vs.dropFirst())
-        let a_stp = Array(vs2.dropLast())
-        
-        var stops: [String] = []
-        
-        //get text
-        for i in a_stp {
-            if let locView = i as? LocFrameView {
-                let text = locView.t.text ?? ""
-                if !text.isEmpty {
-                    stops.append(text)
-                }
-            }
-        }
-        if start.isEmpty || end.isEmpty {
-            est.text = "Enter start/end locations"
-            return
-        }
-
-        //show the time if get result, show N/A if failed
-        calR.calt(start: start, end: end, stops: stops) { [weak self] ef in
+    @objc private func showRouteDetails() {
+        calculateRoute { [weak self] estimatedTime in
             DispatchQueue.main.async {
-                self?.est.text = "Estimated Time: \(ef ?? "N/A")"
+                self?.est.text = "Estimated Time: \(estimatedTime ?? "N/A")"
             }
         }
     }
+
+    
+    private func calculateRoute(completion: @escaping (String?) -> Void) {
+        guard let startView = Locs.arrangedSubviews.first as? LocFrameView,
+              let endView = Locs.arrangedSubviews.last as? LocFrameView else {
+            completion("N/A")
+            return
+        }
+        
+        let start = startView.t.text ?? ""
+        let end = endView.t.text ?? ""
+        let stops = Locs.arrangedSubviews.dropFirst().dropLast().compactMap { view -> String? in
+            guard let stopView = view as? LocFrameView else { return nil }
+            return stopView.t.text?.isEmpty == false ? stopView.t.text : nil
+        }
+        
+        if start.isEmpty || end.isEmpty {
+            completion("Enter start/end locations")
+            return
+        }
+        
+        calR.calt(start: start, end: end, stops: stops) { estimatedTime in
+            completion(estimatedTime)
+        }
+    }
+
 }

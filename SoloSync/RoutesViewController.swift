@@ -15,6 +15,9 @@ class RoutesViewController: UIViewController {
         setView()
         addinit()
         setSort()
+        theScroll.isScrollEnabled = true
+        theScroll.bounces = true
+        theScroll.alwaysBounceVertical = true
     }
     
     // Initially add start and end
@@ -134,6 +137,9 @@ class RoutesViewController: UIViewController {
         
         recBtn.addTarget(self, action: #selector(cal), for: .touchUpInside)
     }
+    
+
+    
     //cal to calculate estimate time of the route
     @objc private func cal() {
         //acquire start and end point

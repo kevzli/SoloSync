@@ -80,17 +80,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eTV-YX-FdD">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eTV-YX-FdD">
                                 <rect key="frame" x="0.0" y="103" width="393" height="666"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwR-Ac-Y5U">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jwR-Ac-Y5U">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="658"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1yW-9q-uy0">
+                                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1yW-9q-uy0">
                                                 <rect key="frame" x="36" y="8" width="321" height="301"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-oe-IYS">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-oe-IYS">
                                                 <rect key="frame" x="150" y="317" width="93" height="35"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Add stop"/>
                                                 <connections>
@@ -99,24 +102,8 @@
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstItem="1yW-9q-uy0" firstAttribute="top" secondItem="jwR-Ac-Y5U" secondAttribute="topMargin" id="5e7-xk-MXn"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="top" secondItem="1yW-9q-uy0" secondAttribute="bottom" constant="8" id="DZD-R1-cJG"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="top" secondItem="jwR-Ac-Y5U" secondAttribute="top" constant="317" id="Jud-68-xHS"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="centerX" secondItem="1yW-9q-uy0" secondAttribute="centerX" id="awo-PM-cgk"/>
-                                            <constraint firstItem="1yW-9q-uy0" firstAttribute="leading" secondItem="jwR-Ac-Y5U" secondAttribute="leading" constant="36" id="ic4-Vk-c9T"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="centerX" secondItem="jwR-Ac-Y5U" secondAttribute="centerX" id="sI6-dz-LIp"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="34b-Cq-61b" firstAttribute="bottom" secondItem="jwR-Ac-Y5U" secondAttribute="bottom" constant="8" id="17W-U1-5EG"/>
-                                    <constraint firstItem="jwR-Ac-Y5U" firstAttribute="top" secondItem="vvq-1W-WqY" secondAttribute="top" id="GPu-1B-fCl"/>
-                                    <constraint firstItem="jwR-Ac-Y5U" firstAttribute="bottom" secondItem="eTV-YX-FdD" secondAttribute="bottomMargin" id="OYS-RD-IUb"/>
-                                    <constraint firstAttribute="trailing" secondItem="jwR-Ac-Y5U" secondAttribute="trailing" id="Phu-lp-TZN"/>
-                                    <constraint firstItem="jwR-Ac-Y5U" firstAttribute="leading" secondItem="34b-Cq-61b" secondAttribute="leading" id="fh3-PC-rTb"/>
-                                    <constraint firstItem="jwR-Ac-Y5U" firstAttribute="centerX" secondItem="eTV-YX-FdD" secondAttribute="centerX" id="uuj-3L-NF4"/>
-                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="vvq-1W-WqY"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="34b-Cq-61b"/>
                             </scrollView>

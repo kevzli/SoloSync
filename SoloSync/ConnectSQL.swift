@@ -228,10 +228,13 @@ func login(user_email: String, user_password: String, completion: @escaping (Res
                     
                     // Check for token and userId in the response
                     if let token = jsonResponse["token"] as? String,
-                       let userId = jsonResponse["userId"] as? Int {
+                       let userId = jsonResponse["userId"] as? Int,
+                       let username = jsonResponse["username"] as? String{
                         // Store token and user_id securely for future use
                         UserDefaults.standard.set(token, forKey: "userToken")
                         UserDefaults.standard.set(userId, forKey: "userId")
+                        UserDefaults.standard.set(username, forKey: "userName")
+                        UserDefaults.standard.set(user_email, forKey: "userEmail")
                         print("Login successful. Token and User ID stored.")
                         completion(.success("Login successful"))
                     } else {
@@ -250,6 +253,7 @@ func login(user_email: String, user_password: String, completion: @escaping (Res
     
     task.resume()
 }
+
 func updateUsername(user_email: String, new_name: String) {
     guard let url = URL(string: "http://3.144.195.16:3000/update_user") else {
         print("Invalid URL")
@@ -285,15 +289,12 @@ func updateUsername(user_email: String, new_name: String) {
         }
         
         if let data = data {
-            // Print raw response data for debugging
-            if let responseString = String(data: data, encoding: .utf8) {
-                print("Raw response: \(responseString)")
-            }
-            
+
             // Parse the JSON response
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     print("JSON Response: \(jsonResponse)")
+                    UserDefaults.standard.set(new_name, forKey: "userName")
                 } else {
                     print("Response is not JSON format.")
                 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zIL-Nt-U19">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zIL-Nt-U19">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Map view configurations" minToolsVersion="14.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -76,67 +76,7 @@
         <scene sceneID="IS6-zt-5vC">
             <objects>
                 <viewController id="sz8-qY-3QF" customClass="RoutesViewController" customModule="SoloSync" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="2nf-CZ-XjB">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="769"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eTV-YX-FdD">
-                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwR-Ac-Y5U">
-                                        <rect key="frame" x="0.0" y="-16" width="393" height="700"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1yW-9q-uy0">
-                                                <rect key="frame" x="36" y="8" width="321" height="301"/>
-                                            </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-oe-IYS">
-                                                <rect key="frame" x="150" y="317" width="93" height="35"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Add stop"/>
-                                                <connections>
-                                                    <action selector="AddLoc:" destination="sz8-qY-3QF" eventType="touchUpInside" id="zQO-Pi-5Je"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="700" id="2LS-aS-brP"/>
-                                            <constraint firstItem="1yW-9q-uy0" firstAttribute="top" secondItem="jwR-Ac-Y5U" secondAttribute="topMargin" id="GX4-rP-HQV"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="centerX" secondItem="jwR-Ac-Y5U" secondAttribute="centerX" id="XLU-Wc-jST"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="centerX" secondItem="1yW-9q-uy0" secondAttribute="centerX" id="lDo-S7-ovQ"/>
-                                            <constraint firstItem="1yW-9q-uy0" firstAttribute="leading" secondItem="jwR-Ac-Y5U" secondAttribute="leading" constant="36" id="lQA-P5-yFK"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="top" secondItem="1yW-9q-uy0" secondAttribute="bottom" constant="8" id="mvw-4m-ult"/>
-                                            <constraint firstItem="Erg-oe-IYS" firstAttribute="top" secondItem="jwR-Ac-Y5U" secondAttribute="top" constant="317" id="pJ3-mh-AH8"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="jwR-Ac-Y5U" firstAttribute="centerX" secondItem="eTV-YX-FdD" secondAttribute="centerX" id="Q8G-Nv-PEj"/>
-                                    <constraint firstAttribute="trailing" secondItem="jwR-Ac-Y5U" secondAttribute="trailing" id="TuU-3V-HZG"/>
-                                    <constraint firstItem="jwR-Ac-Y5U" firstAttribute="leading" secondItem="34b-Cq-61b" secondAttribute="leading" id="bna-3j-Cw4"/>
-                                    <constraint firstItem="jwR-Ac-Y5U" firstAttribute="top" secondItem="eTV-YX-FdD" secondAttribute="top" constant="-16" id="xNS-mm-U8B"/>
-                                    <constraint firstAttribute="bottom" secondItem="jwR-Ac-Y5U" secondAttribute="bottom" constant="-18" id="z80-6i-M5X"/>
-                                </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="vvq-1W-WqY"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="34b-Cq-61b"/>
-                            </scrollView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="IhM-5b-Vs0"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="eTV-YX-FdD" firstAttribute="bottom" secondItem="IhM-5b-Vs0" secondAttribute="bottom" id="7sL-fu-1SP"/>
-                            <constraint firstItem="eTV-YX-FdD" firstAttribute="top" secondItem="IhM-5b-Vs0" secondAttribute="top" id="M60-Mw-A7O"/>
-                            <constraint firstItem="eTV-YX-FdD" firstAttribute="centerX" secondItem="2nf-CZ-XjB" secondAttribute="centerX" id="vpN-kh-D31"/>
-                            <constraint firstItem="eTV-YX-FdD" firstAttribute="leading" secondItem="IhM-5b-Vs0" secondAttribute="leading" id="zcL-t0-hI7"/>
-                        </constraints>
-                    </view>
                     <navigationItem key="navigationItem" id="CXp-li-otc"/>
-                    <connections>
-                        <outlet property="Locs" destination="1yW-9q-uy0" id="5PN-Qd-oVQ"/>
-                        <outlet property="addBtn" destination="Erg-oe-IYS" id="3t3-zd-lij"/>
-                        <outlet property="theScroll" destination="eTV-YX-FdD" id="joc-iq-wFF"/>
-                        <outlet property="theView" destination="jwR-Ac-Y5U" id="FTR-xl-y6e"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E8q-Pj-UAV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

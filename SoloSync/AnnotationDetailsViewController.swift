@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreLocation
 
-class LocationDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var coordinate: CLLocationCoordinate2D!
     var images: [UIImage] = [] // Preloaded images from the database

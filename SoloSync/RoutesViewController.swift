@@ -11,6 +11,15 @@ class RoutesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        gradientLayer.frame = view.bounds
+        let backgroundView = UIView(frame: view.bounds)
+        backgroundView.layer.addSublayer(gradientLayer)
+        view.addSubview(backgroundView)
+        view.sendSubviewToBack(backgroundView)
         Locs.spacing = 10
         setView()
         addinit()

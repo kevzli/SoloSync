@@ -16,6 +16,7 @@
 		F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */; };
 		F208B1402CD99EB9003D7F80 /* SelectedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */; };
 		F218863A2CDAEDDB001B10C9 /* AddInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */; };
+		F22A59ED2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22A59EC2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift */; };
 		F230B7062CF711D1004C3811 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F230B7052CF711D1004C3811 /* LoginViewController.swift */; };
 		F230B7082CF72744004C3811 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F230B7072CF72744004C3811 /* ProfileViewController.swift */; };
 		F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24ECC822CD89D9900A0A4EF /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 		F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoClass.swift; sourceTree = "<group>"; };
 		F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPoint.swift; sourceTree = "<group>"; };
 		F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInfoViewController.swift; sourceTree = "<group>"; };
+		F22A59EC2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailsViewController.swift; sourceTree = "<group>"; };
 		F230B7052CF711D1004C3811 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F230B7072CF72744004C3811 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F24ECC7F2CD89D9900A0A4EF /* SoloSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoloSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +84,7 @@
 				F24ECC842CD89D9900A0A4EF /* SceneDelegate.swift */,
 				F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */,
 				F24ECC862CD89D9900A0A4EF /* ViewController.swift */,
+				F22A59EC2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift */,
 				F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */,
 				29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */,
 				F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */,
@@ -179,6 +182,7 @@
 				6FAC18DC2CE16EFB00A60BD1 /* RoutesViewController.swift in Sources */,
 				F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */,
 				F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */,
+				F22A59ED2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift in Sources */,
 				29375C5F2CDC7F49000D1584 /* ConnectSQL.swift in Sources */,
 				6FAC18E22CE1D6F600A60BD1 /* CalRoute.swift in Sources */,
 				F20212D52CDC749D00AC6C30 /* LocationInfoClass.swift in Sources */,

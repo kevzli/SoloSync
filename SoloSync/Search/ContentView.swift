@@ -26,6 +26,8 @@ struct ContentView: View {
                 }
                 .tag(result)
             }
+            
+            UserAnnotation()
         }
         .ignoresSafeArea()
 
@@ -46,11 +48,19 @@ struct ContentView: View {
 //                Spacer()
 //                VStack(spacing:0) {
 //                    if let selectedLocation {
-//                        Item
+//                        ItemInfoView(selectedResult: selectedResult, route: route)
+//                            .frame(height: 128)
+//                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                            .padding([.top, .horizontal])
 //                    }
+//                    BeantownButtons(position: $position, searchResults: $searchResults, visibleRegion: visibleRegion)
+//                        .padding(.top)
 //                }
+//                Spacer()
 //            }
+//            .background(.thinMaterial)
 //        }
+        
     }
 }
 

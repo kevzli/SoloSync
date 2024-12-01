@@ -9,11 +9,16 @@ import UIKit
 import SwiftUI
 
 class SearchViewController: UIViewController {
+    @ObservedObject var locationManager = LocationManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
+        if locationManager.userLocation == nil {
+            locationManager.requestLocation()
+        } else {
+            print(locationManager.userLocation!)
+        }
         let swiftUIView = ContentView()
         let hostingController = UIHostingController(rootView: swiftUIView)
         addChild(hostingController)

@@ -192,6 +192,7 @@ function queryDatabase(query, values) {
 
 //add Route, d contains description of est time and the actual route
 app.post('/addRoute', (req, res) => {
+  console.log(req.body);
   const { d } = req.body;
 
   if (!d) {return res.status(400).json({ message: 'Empty description' });}

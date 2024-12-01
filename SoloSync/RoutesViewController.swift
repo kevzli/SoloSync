@@ -6,49 +6,48 @@ class RoutesViewController: UIViewController {
     private let theView = UIView()
     private let Locs = UIStackView()
     private let addBtn = UIButton(type: .system)
-    private let sort_arr = UISegmentedControl(items: ["Rating", "Popularity", "Category"])
-    private let est = UILabel()
     private let recBtn = UIButton(type: .system)
     private let btns = RouteBtns()
     private let calR = CalRoute()
     
+    //init func
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        
         setupScrollView()
-        setupMainView()
+        setupMain()
         setupStackView()
-        setupAddButton()
-        setupSortAndButtons()
-        addInitialLocations()
+        setupAddBtn()
+        setupBtns()
+        addInit()
     }
     
     private func setupScrollView() {
-        theScroll.translatesAutoresizingMaskIntoConstraints = false
-        theScroll.isScrollEnabled = true
         theScroll.bounces = true
         theScroll.alwaysBounceVertical = true
+        theScroll.translatesAutoresizingMaskIntoConstraints = false
+        theScroll.isScrollEnabled = true
+        
         view.addSubview(theScroll)
         
         NSLayoutConstraint.activate([
+            theScroll.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            theScroll.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             theScroll.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             theScroll.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            theScroll.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            theScroll.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
-    private func setupMainView() {
+    private func setupMain() {
         theView.translatesAutoresizingMaskIntoConstraints = false
         theScroll.addSubview(theView)
         
         NSLayoutConstraint.activate([
-            theView.leadingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.leadingAnchor),
-            theView.trailingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.trailingAnchor),
             theView.topAnchor.constraint(equalTo: theScroll.contentLayoutGuide.topAnchor),
             theView.bottomAnchor.constraint(equalTo: theScroll.contentLayoutGuide.bottomAnchor),
-            theView.widthAnchor.constraint(equalTo: theScroll.frameLayoutGuide.widthAnchor)
+            theView.widthAnchor.constraint(equalTo: theScroll.frameLayoutGuide.widthAnchor),
+            theView.leadingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.leadingAnchor),
+            theView.trailingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.trailingAnchor),
+           
         ])
     }
     
@@ -66,11 +65,12 @@ class RoutesViewController: UIViewController {
         ])
     }
     
-    private func setupAddButton() {
+    private func setupAddBtn() {
         addBtn.setTitle("Add Stop", for: .normal)
-        addBtn.setTitleColor(.systemBlue, for: .normal)
-        addBtn.addTarget(self, action: #selector(addLocation), for: .touchUpInside)
+        addBtn.setTitleColor(.white, for: .normal)
         addBtn.translatesAutoresizingMaskIntoConstraints = false
+        addBtn.addTarget(self, action: #selector(addLocation), for: .touchUpInside)
+        
         theView.addSubview(addBtn)
         
         NSLayoutConstraint.activate([
@@ -80,14 +80,7 @@ class RoutesViewController: UIViewController {
         ])
     }
     
-    private func setupSortAndButtons() {
-        sort_arr.selectedSegmentIndex = 0
-        sort_arr.translatesAutoresizingMaskIntoConstraints = false
-        
-        est.text = "Estimated Time: 1h 50m"
-        est.textAlignment = .center
-        est.translatesAutoresizingMaskIntoConstraints = false
-        
+    private func setupBtns() {
         recBtn.setTitle("Show Rec Route", for: .normal)
         recBtn.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
         recBtn.setTitleColor(.white, for: .normal)
@@ -95,21 +88,11 @@ class RoutesViewController: UIViewController {
         recBtn.addTarget(self, action: #selector(showRouteDetails), for: .touchUpInside)
         recBtn.translatesAutoresizingMaskIntoConstraints = false
         
-        theView.addSubview(sort_arr)
-        theView.addSubview(est)
         theView.addSubview(recBtn)
         theView.addSubview(btns)
         
         NSLayoutConstraint.activate([
-            sort_arr.topAnchor.constraint(equalTo: addBtn.bottomAnchor, constant: 40),
-            sort_arr.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
-            sort_arr.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
-            
-            est.topAnchor.constraint(equalTo: sort_arr.bottomAnchor, constant: 20),
-            est.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
-            est.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
-            
-            recBtn.topAnchor.constraint(equalTo: est.bottomAnchor, constant: 30),
+            recBtn.topAnchor.constraint(equalTo: addBtn.bottomAnchor, constant: 30),
             recBtn.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 116),
             recBtn.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -116),
             recBtn.heightAnchor.constraint(equalToConstant: 44),
@@ -119,16 +102,30 @@ class RoutesViewController: UIViewController {
             btns.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
             btns.bottomAnchor.constraint(equalTo: theView.bottomAnchor, constant: -20)
         ])
+        btns.s.addTarget(self, action: #selector(sv), for: .touchUpInside)
+        btns.share.addTarget(self, action: #selector(share), for: .touchUpInside)
     }
     
-    private func addInitialLocations() {
-        let start = createLocationInput(title: "Start", placeholder: "Enter Start Location")
-        let end = createLocationInput(title: "End", placeholder: "Enter End Location")
+    //add init
+    private func addInit() {
+        let g = CAGradientLayer()
+        g.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
+        g.startPoint = CGPoint(x: 0, y: 0)
+        g.endPoint = CGPoint(x: 1, y: 1)
+        g.frame = view.bounds
+                
+        let bg = UIView(frame: view.bounds)
+        bg.layer.addSublayer(g)
+        view.addSubview(bg)
+        view.sendSubviewToBack(bg)
+        let start = c(title: "Start", placeholder: "Enter Start Location")
+        let end = c(title: "End", placeholder: "Enter End Location")
         Locs.addArrangedSubview(start)
         Locs.addArrangedSubview(end)
     }
     
-    private func createLocationInput(title: String, placeholder: String) -> LocFrameView {
+    //add stop
+    private func c(title: String, placeholder: String) -> LocFrameView {
         let loc = LocFrameView()
         loc.configure(title: title, placeholder: placeholder)
         return loc
@@ -136,7 +133,7 @@ class RoutesViewController: UIViewController {
     
     @objc private func addLocation() {
         let index = Locs.arrangedSubviews.count - 1
-        let stop = createLocationInput(title: "Stop \(index)", placeholder: "Enter Location")
+        let stop = c(title: "Stop \(index)", placeholder: "Enter Location")
         
         stop.deleteAction = { [weak self, weak stop] in
             guard let self = self, let stop = stop else { return }
@@ -148,18 +145,13 @@ class RoutesViewController: UIViewController {
     }
     
     @objc private func showRouteDetails() {
-        calculateRoute { [weak self] estimatedTime in
-            DispatchQueue.main.async {
-                self?.est.text = "Estimated Time: \(estimatedTime ?? "N/A")"
-            }
-        }
+        calculateRoute()
     }
-
     
-    private func calculateRoute(completion: @escaping (String?) -> Void) {
+    //cal route based on google api
+    private func calculateRoute() {
         guard let startView = Locs.arrangedSubviews.first as? LocFrameView,
               let endView = Locs.arrangedSubviews.last as? LocFrameView else {
-            completion("N/A")
             return
         }
         
@@ -171,13 +163,53 @@ class RoutesViewController: UIViewController {
         }
         
         if start.isEmpty || end.isEmpty {
-            completion("Enter start/end locations")
+            show(title: "Missing info", msg: "Please fill in all info")
             return
         }
-        
-        calR.calt(start: start, end: end, stops: stops) { estimatedTime in
-            completion(estimatedTime)
+        print("call")
+        //get a long string
+        calR.calt(start: start, end: end, stops: stops) { est, desc in
+            DispatchQueue.main.async {
+                if let est = est, let desc = desc{
+                    let t = "\(start) -> \(end)"
+                    let join = "\(t)\n\nEstimated Time: \(est)\n\nRoute Description:\n\(desc)"
+                    let VC = RouteDetailViewController()
+                    VC.des = join
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }else{
+                    self.show(title: "Error", msg: "No route found")
+                }
+            }
         }
     }
-
+    
+    private func show(title: String, msg: String) {
+        let m = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        m.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(m, animated: true)
+    }
+    
+    //jump to saved table
+    @objc private func sv(){
+        svtable()
+    }
+    
+    //to share table
+    @objc private func share(){
+        let VC = ShareViewController()
+        navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    //load usr default
+    private func svtable(){
+        let routes = UserDefaults.standard.array(forKey: "des") as? [[String: Any]] ?? []
+        if routes.isEmpty {
+            show(title:"Empty saved for now", msg:"add first")
+            return
+        }
+        let VC = SavedViewController()
+        VC.routes = routes
+        navigationController?.pushViewController(VC, animated: true)
+        
+    }
 }

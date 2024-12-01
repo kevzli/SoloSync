@@ -5,7 +5,7 @@ class LocFrameView: UIView {
     let l: UILabel = {
         let l = UILabel()
         l.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        l.textColor = UIColor.black
+        l.textColor = UIColor.white
         return l
     }()
     //input field with formating

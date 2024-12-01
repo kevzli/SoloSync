@@ -8,6 +8,7 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
     var selectedImage: UIImage?
     var imageView: UIImageView!
     var addImageButton: UIButton!
+    var socialMediaTextView: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,7 +17,30 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupImageView()
         setupAddImageButton()
         setupNoteTextView()
+        setSocialMeidaView()
         setupSaveButton()
+    }
+    
+    private func setSocialMeidaView(){
+        socialMediaTextView = UITextView()
+        socialMediaTextView.translatesAutoresizingMaskIntoConstraints = false
+        socialMediaTextView.layer.cornerRadius = 8
+        socialMediaTextView.layer.masksToBounds = true
+        socialMediaTextView.backgroundColor = .systemGray6
+        socialMediaTextView.font = UIFont.systemFont(ofSize: 16)
+        socialMediaTextView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        socialMediaTextView.text = "Add Social Meida"
+        socialMediaTextView.textColor = .gray
+        
+        socialMediaTextView.delegate = self
+        view.addSubview(socialMediaTextView)
+        
+        NSLayoutConstraint.activate([
+            socialMediaTextView.topAnchor.constraint(equalTo: noteTextView.bottomAnchor, constant: 20),
+            socialMediaTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            socialMediaTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            socialMediaTextView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
+        ])
     }
 
     private func setupImageView() {
@@ -85,7 +109,7 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         view.addSubview(saveButton)
         
         NSLayoutConstraint.activate([
-            saveButton.topAnchor.constraint(equalTo: noteTextView.bottomAnchor, constant: 20),
+            saveButton.topAnchor.constraint(equalTo: socialMediaTextView.bottomAnchor, constant: 20),
             saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             saveButton.widthAnchor.constraint(equalToConstant: 100),
             saveButton.heightAnchor.constraint(equalToConstant: 50)
@@ -103,8 +127,8 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         guard let coordinate = coordinate, let note = noteTextView.text, !note.isEmpty, note != "Add Note" else {
             return
         }
-
-        LocationInfoManager.shared.currentLocationInfo = LocationInfo(coordinate: coordinate, note: note, image: selectedImage)
+        let socialMeida = socialMediaTextView.text ?? "Nothing"
+        LocationInfoManager.shared.currentLocationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: socialMeida ,image: selectedImage)
         
         dismiss(animated: true, completion: nil)
     }

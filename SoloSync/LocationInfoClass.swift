@@ -20,6 +20,7 @@ extension NSMutableData {
 struct LocationInfo {
     var coordinate: CLLocationCoordinate2D
     var note: String
+    var socialMedia: String = "Nothing here"
     var image: UIImage?
     var creator: Int = -1
     var noteId: Int = -1
@@ -33,8 +34,6 @@ class LocationInfoManager {
     var currentLocationInfo: LocationInfo?
     
     func saveLocationInfoToAPI(_ locationInfo: LocationInfo) {
-        // Convert coordinate to string
-        // print("saveLocationInfoToAPI worked")
         guard let userIdString = UserDefaults.standard.string(forKey: "userId"),
               let userId = Int(userIdString) else {
             print("No valid user ID found")
@@ -46,7 +45,7 @@ class LocationInfoManager {
         
         // Create a unique name for the image if it exists, otherwise default to nil
         var imageName: String? = nil
-        let imageData: Data? = nil // Declare imageData with the correct type
+        let imageData: Data? = nil
     
         if let image = locationInfo.image {
             let dateFormatter = DateFormatter()
@@ -64,7 +63,7 @@ class LocationInfoManager {
             let imageDataToUse = imageData
             
             // Pass imageData along with other parameters to `shareNote`
-            shareNote(user_id: userId, coordinate: coordinateString, note: locationInfo.note, imageName: imageNameToUse, imageUpload: imageDataToUse) { result in
+            shareNote(user_id: userId, coordinate: coordinateString, note: locationInfo.note, imageName: imageNameToUse, socialMediaString: locationInfo.socialMedia, imageUpload: imageDataToUse) { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let jsonResponse):
@@ -114,8 +113,9 @@ class LocationInfoManager {
                            let note = json["note"] as? String,
                            let note_id = json["note_id"] as? Int,
                            let creatorId = json["user_id"] as? Int
+                           
                         {
-
+                            let social = json["socialMedia"] as? String
                             let imageURL = json["imageurl"] as? String
                             // Todo: Add reading image
                             if let imageURL = imageURL {
@@ -136,7 +136,7 @@ class LocationInfoManager {
                                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                                 
                                 // Create LocationInfo object
-                                let locationInfo = LocationInfo(coordinate: coordinate, note: note, image: nil, creator: creatorId, noteId: note_id)  // You can handle image loading if needed
+                                let locationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: social ?? "Nothing", creator: creatorId, noteId: note_id)
                                 
                                 annotations.append(locationInfo)
                             }

@@ -82,9 +82,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     //Matching annotation found
                     DispatchQueue.main.async {
                         let annotationDetailsVC = AnnotationDetailsViewController()
-                        //
-                        //populate new view controller with fetched data
-                        //
                         self?.present(annotationDetailsVC, animated: true, completion: nil)
                     }
                 } else {

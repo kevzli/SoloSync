@@ -57,7 +57,7 @@ func insertUser(name: String, password: String, email: String, completion: @esca
     task.resume()
 }
 
-func shareNote(user_id: Int, coordinate: String, note: String, imageName: String, imageUpload: Data?, completion: @escaping (Result<[String: Any], Error>) -> Void) {
+func shareNote(user_id: Int, coordinate: String, note: String, imageName: String, socialMediaString: String,imageUpload: Data?, completion: @escaping (Result<[String: Any], Error>) -> Void) {
     // Part 1: Share Note
     guard let url = URL(string: "http://3.144.195.16:3000/share") else {
         print("Invalid URL")
@@ -75,7 +75,7 @@ func shareNote(user_id: Int, coordinate: String, note: String, imageName: String
         return
     }
 
-    let body: [String: Any] = ["user_id": user_id, "coordinate": coordinate, "note": note, "image_url": imageName]
+    let body: [String: Any] = ["user_id": user_id, "coordinate": coordinate, "note": note, "image_url": imageName, "social_media": socialMediaString ]
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: body, options: [])
         request.httpBody = jsonData

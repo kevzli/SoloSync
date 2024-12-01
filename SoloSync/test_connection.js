@@ -125,18 +125,18 @@ function authenticateToken(req, res, next) {
 
 // Share note
 app.post('/share', authenticateToken, (req, res) => {
-  const { user_id, coordinate, note, image_url } = req.body;
+  const { user_id, coordinate, note, image_url, social_media} = req.body;
   let query;
   let values;
 
   if (image_url === '') {
     // If image_url is empty, insert NULL by not including it in the query
-    query = 'INSERT INTO Shared (user_id, coordinate, note) VALUES (?, ?, ?)';
-    values = [user_id, coordinate, note];
+    query = 'INSERT INTO Shared (user_id, coordinate, note, socialMedia) VALUES (?, ?, ?, ?)';
+    values = [user_id, coordinate, note, social_media];
   } else {
     // Include image_url in the query if it is provided
-    query = 'INSERT INTO Shared (user_id, coordinate, note, imageurl) VALUES (?, ?, ?, ?)';
-    values = [user_id, coordinate, note, image_url];
+    query = 'INSERT INTO Shared (user_id, coordinate, note, imageurl, socialMedia) VALUES (?, ?, ?, ?, ?)';
+    values = [user_id, coordinate, note, image_url, social_media];
   }
 
   queryDatabase(query, values)

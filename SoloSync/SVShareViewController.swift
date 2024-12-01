@@ -53,6 +53,7 @@ class SVShareViewController: UIViewController {
             shareBtn.heightAnchor.constraint(equalToConstant: 50)
         ])
         
+        //color bg
         let g = CAGradientLayer()
         g.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
         g.startPoint = CGPoint(x: 0, y: 0)
@@ -73,6 +74,7 @@ class SVShareViewController: UIViewController {
             return
         }
         let url = URL(string: "http://3.144.195.16:3000/shareRoute")
+        
         var req = URLRequest(url: url!)
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")

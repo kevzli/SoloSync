@@ -29,10 +29,9 @@ class ShareViewController: UIViewController, UITableViewDataSource, UITableViewD
     //click jump to a new controller
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let VC = SVShareViewController()
+        let VC = ShareDesViewController()
         let route = routes[indexPath.row]
         VC.des = route["description"] as? String
-        VC.routeId = route["id"] as? Int
         navigationController?.pushViewController(VC, animated: true)
     }
     
@@ -47,6 +46,7 @@ class ShareViewController: UIViewController, UITableViewDataSource, UITableViewD
         load()
     }
     
+    //setup
     private func load() {
         theview.translatesAutoresizingMaskIntoConstraints = false
         theview.dataSource = self
@@ -57,6 +57,7 @@ class ShareViewController: UIViewController, UITableViewDataSource, UITableViewD
         theview.register(UITableViewCell.self, forCellReuseIdentifier: "RouteCell")
         view.addSubview(theview)
         
+        //format navbar
         title = "Shared Routes"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = .white
@@ -68,6 +69,7 @@ class ShareViewController: UIViewController, UITableViewDataSource, UITableViewD
             theview.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
+        //color bg
         let g = CAGradientLayer()
         g.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
         g.startPoint = CGPoint(x: 0, y: 0)
@@ -81,8 +83,10 @@ class ShareViewController: UIViewController, UITableViewDataSource, UITableViewD
         
     }
     
+    //get all route with is_shared set, currently there's no delete option
     private func fetch(){
         let url = URL(string: "http://3.144.195.16:3000/getRoute")
+        
         let task = URLSession.shared.dataTask(with: url!) { [weak self] data, response, err in
             let data = data!
             do{

@@ -21,6 +21,7 @@ class RoutesViewController: UIViewController {
         addInit()
     }
     
+    //make it scroll!!!
     private func setupScrollView() {
         theScroll.bounces = true
         theScroll.alwaysBounceVertical = true
@@ -37,27 +38,25 @@ class RoutesViewController: UIViewController {
         ])
     }
     
+    //add a subview to scroll, so that there's content to adjust
     private func setupMain() {
         theView.translatesAutoresizingMaskIntoConstraints = false
         theScroll.addSubview(theView)
-        
         NSLayoutConstraint.activate([
             theView.topAnchor.constraint(equalTo: theScroll.contentLayoutGuide.topAnchor),
             theView.bottomAnchor.constraint(equalTo: theScroll.contentLayoutGuide.bottomAnchor),
             theView.widthAnchor.constraint(equalTo: theScroll.frameLayoutGuide.widthAnchor),
             theView.leadingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.leadingAnchor),
             theView.trailingAnchor.constraint(equalTo: theScroll.contentLayoutGuide.trailingAnchor),
-           
         ])
     }
-    
+    //stack view contain the location info of start, end, stops... follow MVC
     private func setupStackView() {
         Locs.axis = .vertical
         Locs.spacing = 10
         Locs.alignment = .fill
         Locs.translatesAutoresizingMaskIntoConstraints = false
         theView.addSubview(Locs)
-        
         NSLayoutConstraint.activate([
             Locs.leadingAnchor.constraint(equalTo: theView.leadingAnchor, constant: 16),
             Locs.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
@@ -65,6 +64,7 @@ class RoutesViewController: UIViewController {
         ])
     }
     
+    //AddBtn to add more stop, only layout here
     private func setupAddBtn() {
         addBtn.setTitle("Add Stop", for: .normal)
         addBtn.setTitleColor(.white, for: .normal)
@@ -80,12 +80,12 @@ class RoutesViewController: UIViewController {
         ])
     }
     
+    //layout of the Cal btn
     private func setupBtns() {
         recBtn.setTitle("Show Rec Route", for: .normal)
         recBtn.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
         recBtn.setTitleColor(.white, for: .normal)
         recBtn.layer.cornerRadius = 8
-        recBtn.addTarget(self, action: #selector(showRouteDetails), for: .touchUpInside)
         recBtn.translatesAutoresizingMaskIntoConstraints = false
         
         theView.addSubview(recBtn)
@@ -102,11 +102,14 @@ class RoutesViewController: UIViewController {
             btns.trailingAnchor.constraint(equalTo: theView.trailingAnchor, constant: -16),
             btns.bottomAnchor.constraint(equalTo: theView.bottomAnchor, constant: -20)
         ])
+        
+        //bind btns to func
         btns.s.addTarget(self, action: #selector(sv), for: .touchUpInside)
         btns.share.addTarget(self, action: #selector(share), for: .touchUpInside)
+        recBtn.addTarget(self, action: #selector(calc), for: .touchUpInside)
     }
     
-    //add init
+    //add init loc, start and end
     private func addInit() {
         let g = CAGradientLayer()
         g.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
@@ -131,6 +134,7 @@ class RoutesViewController: UIViewController {
         return loc
     }
     
+    //func to add more stop
     @objc private func addLocation() {
         let index = Locs.arrangedSubviews.count - 1
         let stop = c(title: "Stop \(index)", placeholder: "Enter Location")
@@ -144,12 +148,12 @@ class RoutesViewController: UIViewController {
         Locs.insertArrangedSubview(stop, at: index)
     }
     
-    @objc private func showRouteDetails() {
-        calculateRoute()
+    @objc private func calc() {
+        calcc()
     }
     
     //cal route based on google api
-    private func calculateRoute() {
+    private func calcc() {
         guard let startView = Locs.arrangedSubviews.first as? LocFrameView,
               let endView = Locs.arrangedSubviews.last as? LocFrameView else {
             return
@@ -167,7 +171,7 @@ class RoutesViewController: UIViewController {
             return
         }
         print("call")
-        //get a long string
+        //get a long string, all info (start, end, description, est time) in one string
         calR.calt(start: start, end: end, stops: stops) { est, desc in
             DispatchQueue.main.async {
                 if let est = est, let desc = desc{

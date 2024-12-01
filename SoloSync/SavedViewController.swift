@@ -12,10 +12,12 @@ class SavedViewController: UIViewController, UITableViewDataSource, UITableViewD
         return routes.count
     }
     
+    //cell of tableview, only show name
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RouteCell", for: indexPath)
         let route = routes[indexPath.row]
         let d = route["description"] as? String ?? "Route"
+        //filter
         let t = d.components(separatedBy: "\n").first ?? "Route"
         cell.textLabel?.text = t
         cell.textLabel?.textColor = .white
@@ -23,6 +25,7 @@ class SavedViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
     
+    //open the saved share view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let VC = SVShareViewController()
@@ -43,6 +46,7 @@ class SavedViewController: UIViewController, UITableViewDataSource, UITableViewD
         load()
     }
     
+    //setup
     private func load() {
         theview.translatesAutoresizingMaskIntoConstraints = false
         theview.dataSource = self
@@ -58,12 +62,15 @@ class SavedViewController: UIViewController, UITableViewDataSource, UITableViewD
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = .white
         
+        //layout
         NSLayoutConstraint.activate([
             theview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             theview.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             theview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             theview.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        //color background
         let g = CAGradientLayer()
         g.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
         g.startPoint = CGPoint(x: 0, y: 0)

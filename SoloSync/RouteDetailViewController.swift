@@ -19,6 +19,8 @@ class RouteDetailViewController: UIViewController {
         load()
         
     }
+    
+    //load description and btn
     private func load() {
         desc.backgroundColor = UIColor(white: 0.98, alpha: 1)
         desc.isEditable = false
@@ -38,6 +40,7 @@ class RouteDetailViewController: UIViewController {
         view.addSubview(desc)
         view.addSubview(addBtn)
         
+        //constraint autolayout
         NSLayoutConstraint.activate([
             desc.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             desc.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -50,6 +53,7 @@ class RouteDetailViewController: UIViewController {
             addBtn.heightAnchor.constraint(equalToConstant: 50)
         ])
         
+        //color background
         let g = CAGradientLayer()
         g.colors = [UIColor.systemBlue.cgColor, UIColor.systemTeal.cgColor]
         g.startPoint = CGPoint(x: 0, y: 0)
@@ -62,12 +66,12 @@ class RouteDetailViewController: UIViewController {
         view.sendSubviewToBack(bg)
     }
     
+    //call backend to add description to db
     @objc private func addRoute() {
-        self.save(id:1, des: des!)
-        
         guard let des = des else {return}
         
         let url = URL(string: "http://3.144.195.16:3000/addRoute")
+    
         var req = URLRequest(url: url!)
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")

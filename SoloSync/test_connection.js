@@ -190,6 +190,52 @@ function queryDatabase(query, values) {
   });
 }
 
+//add Route, d contains description of est time and the actual route
+app.post('/addRoute', (req, res) => {
+  const { d } = req.body;
+
+  if (!d) {return res.status(400).json({ message: 'Empty description' });}
+
+  const q = 'INSERT INTO route (is_shared, description) VALUES (0, ?)';
+
+  queryDatabase(q, [d])
+    .then((result) => {res.status(200).json({ message: 'Route added!', routeId: result.insertId });})
+    .catch((err) => {res.status(500).json({ message: 'Error adding!', error: err });});
+});
+
+//change the route to shared.
+app.post('/shareRoute', (req, res) => {
+  const { id} = req.body;
+
+  if (!id) {
+    return res.status(400).json({ message: 'ID needed' });
+  }
+  const q = 'UPDATE route SET is_shared = 1 WHERE route_id = ?';
+
+  queryDatabase(q, [id])
+    .then((result) => {
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Route not found' });
+      }
+      res.status(200).json({ message: 'shared Success' });
+    })
+    .catch((err) => {res.status(500).json({ message: 'Error sharing', error: err });});
+});
+
+//return all route with is_shared = 1
+app.get('/getRoute', (req, res) => {
+  const q = 'SELECT * FROM route WHERE is_shared = 1';
+
+  queryDatabase(q)
+    .then((results) => {res.status(200).json(results);})
+    .catch((err) => {
+      res.status(500).json({ message: 'Error get all routes', error: err });
+    });
+});
+
+
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

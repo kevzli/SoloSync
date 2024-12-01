@@ -17,11 +17,11 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupImageView()
         setupAddImageButton()
         setupNoteTextView()
-        setSocialMeidaView()
+        setSocialMediaView()
         setupSaveButton()
     }
     
-    private func setSocialMeidaView(){
+    private func setSocialMediaView(){
         socialMediaTextView = UITextView()
         socialMediaTextView.translatesAutoresizingMaskIntoConstraints = false
         socialMediaTextView.layer.cornerRadius = 8
@@ -29,7 +29,7 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         socialMediaTextView.backgroundColor = .systemGray6
         socialMediaTextView.font = UIFont.systemFont(ofSize: 16)
         socialMediaTextView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        socialMediaTextView.text = "Add Social Meida"
+        socialMediaTextView.text = "Add Instagram Handle"
         socialMediaTextView.textColor = .gray
         
         socialMediaTextView.delegate = self
@@ -39,7 +39,8 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
             socialMediaTextView.topAnchor.constraint(equalTo: noteTextView.bottomAnchor, constant: 20),
             socialMediaTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             socialMediaTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            socialMediaTextView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
+//            socialMediaTextView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
+            socialMediaTextView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 

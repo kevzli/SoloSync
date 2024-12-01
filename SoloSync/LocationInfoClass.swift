@@ -154,5 +154,20 @@ class LocationInfoManager {
             }
         }.resume()
     }
+    
+    func checkIfAnnotationExists(at coordinate: CLLocationCoordinate2D, completion: @escaping (Bool, LocationInfo?) -> Void) {
+        fetchAllAnnotations { annotations in
+                let matchingAnnotation = annotations.first {
+                    abs($0.coordinate.latitude - coordinate.latitude) < 0.001 &&
+                    abs($0.coordinate.longitude - coordinate.longitude) < 0.001
+                }
+                
+                if let annotation = matchingAnnotation {
+                    completion(true, annotation)
+                } else {
+                    completion(false, nil)
+                }
+            }
+        }
 }
 

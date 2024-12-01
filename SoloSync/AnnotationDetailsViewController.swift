@@ -8,16 +8,19 @@
 import Foundation
 import UIKit
 import CoreLocation
+import MapKit
 
-class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate {
     
     var coordinate: CLLocationCoordinate2D!
-    var images: [UIImage] = [] // Preloaded images from the database
-    var comments: [String] = [] // Preloaded comments from the database
+    var images: [UIImage] = []
+    var comments: [String] = []
+    var socialMediaHandles: [String] = []
     
-    private var imageView: UIImageView!
+//    private var imageView: UIImageView!
     private var addImageButton: UIButton!
     private var commentsTableView: UITableView!
+    private var imageStackView: UIStackView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,36 +33,37 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
     }
     
     private func setupImageView() {
-        imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = UIColor.lightGray
-        imageView.layer.cornerRadius = 8
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        view.addSubview(imageView)
-        
+        imageStackView = UIStackView()
+        imageStackView.translatesAutoresizingMaskIntoConstraints = false
+        imageStackView.axis = .horizontal
+        imageStackView.distribution = .fillEqually
+        imageStackView.spacing = 6
+
+
+        view.addSubview(imageStackView)
+
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
-            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3)
+            imageStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            imageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            imageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            imageStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
         ])
     }
     
     private func setupAddImageButton() {
         addImageButton = UIButton(type: .system)
-        addImageButton.translatesAutoresizingMaskIntoConstraints = false
-        addImageButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .bold)), for: .normal)
-        addImageButton.tintColor = .systemBlue
-        addImageButton.addTarget(self, action: #selector(openAddInfoView), for: .touchUpInside)
-        view.addSubview(addImageButton)
-        
-        NSLayoutConstraint.activate([
-            addImageButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 15),
-            addImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addImageButton.widthAnchor.constraint(equalToConstant: 60),
-            addImageButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
+            addImageButton.translatesAutoresizingMaskIntoConstraints = false
+            addImageButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .bold)), for: .normal)
+            addImageButton.tintColor = .systemBlue
+            addImageButton.addTarget(self, action: #selector(openAddInfoView), for: .touchUpInside)
+            view.addSubview(addImageButton)
+            
+            NSLayoutConstraint.activate([
+                addImageButton.topAnchor.constraint(equalTo: imageStackView.bottomAnchor, constant: 15),
+                addImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                addImageButton.widthAnchor.constraint(equalToConstant: 60),
+                addImageButton.heightAnchor.constraint(equalToConstant: 60)
+            ])
     }
     
     private func setupCommentsTableView() {
@@ -72,14 +76,47 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
         
         NSLayoutConstraint.activate([
             commentsTableView.topAnchor.constraint(equalTo: addImageButton.bottomAnchor, constant: 20),
+            commentsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             commentsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            commentsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            commentsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            commentsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
     
     private func fetchLocationDetails() {
-        // Fetch images and comments from the database based on the coordinate
+        guard let coordinate = self.coordinate else {
+            return
+        }
+        
+        LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
+            let matchingAnnotations = annotations.filter {
+                $0.coordinate.latitude == coordinate.latitude && $0.coordinate.longitude == coordinate.longitude
+            }
+            
+            DispatchQueue.main.async{
+                self?.images = matchingAnnotations.compactMap { $0.image }
+                self?.comments = matchingAnnotations.map { $0.note }
+                self?.socialMediaHandles = matchingAnnotations.map { $0.socialMedia }
+                
+                self?.updateImageStackView()
+                self?.commentsTableView.reloadData()
+            }
+            
+        }
+        
+    }
+    
+    private func updateImageStackView() {
+        imageStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            
+        for i in 0..<min(3, images.count) {
+            let imageView = UIImageView()
+            imageView.image = images[i]
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.layer.masksToBounds = true
+            imageView.layer.cornerRadius = 8
+            imageView.contentMode = .scaleAspectFill
+            imageStackView.addArrangedSubview(imageView)
+        }
     }
     
     @objc private func openAddInfoView() {
@@ -93,9 +130,9 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath)
-        cell.textLabel?.text = comments[indexPath.row]
-        cell.textLabel?.numberOfLines = 0
-        return cell
-    }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath)
+            cell.textLabel?.text = "\(comments[indexPath.row]) \n Social: \(socialMediaHandles[indexPath.row])"
+            cell.textLabel?.numberOfLines = 0
+            return cell
+        }
 }

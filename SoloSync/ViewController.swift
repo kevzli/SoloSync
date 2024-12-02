@@ -56,6 +56,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     DispatchQueue.main.async {
                         self?.annotations = annotations
                         AllAnnotations = annotations
+
                         for locationInfo in annotations {
                             let annotation = MKPointAnnotation()
                             annotation.coordinate = locationInfo.coordinate

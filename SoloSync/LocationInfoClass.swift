@@ -100,18 +100,11 @@ class LocationInfoManager {
                 return
             }
 
-            // Print raw response data to debug
-            if let responseString = String(data: data, encoding: .utf8) {
-                print("Raw response from server:", responseString)
-            }
-
             do {
                 if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                     var annotations: [LocationInfo] = []
-                    var pendingImages = jsonArray.count
 
                     for json in jsonArray {
-                        var loadedImage: UIImage? = nil
                         if let coordinateString = json["coordinate"] as? String,
                            let note = json["note"] as? String,
                            let note_id = json["note_id"] as? Int,
@@ -124,37 +117,28 @@ class LocationInfoManager {
                             if let latitude = Double(coordinates[0]), let longitude = Double(coordinates[1]) {
                                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 
+                                let locationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: social ?? "Nothing", image: UIImage(named: "placeholder"), creator: creatorId, noteId: note_id)
+                                annotations.append(locationInfo)
+
                                 if let imageURL = imageURL {
                                     fetchImage(ImgUrl: imageURL) { image in
-                                        if image != nil {
-                                            loadedImage = image
-                                        } else {
-                                            print("Failed to fetch the image from URL:", imageURL)
-                                        }
-
-                                        let locationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: social ?? "Nothing", image: loadedImage, creator: creatorId, noteId: note_id)
-                                        annotations.append(locationInfo)
-
-                                        pendingImages -= 1
-                                        if pendingImages == 0 {
-                                            DispatchQueue.main.async {
-                                                completion(annotations)
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    let locationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: social ?? "Nothing", image: loadedImage, creator: creatorId, noteId: note_id)
-                                    annotations.append(locationInfo)
-
-                                    pendingImages -= 1
-                                    if pendingImages == 0 {
                                         DispatchQueue.main.async {
-                                            completion(annotations)
+                                            if let image = image {
+                                                if let index = annotations.firstIndex(where: { $0.noteId == note_id }) {
+                                                    annotations[index].image = image
+                                                    AllAnnotations[index].image = image
+                                                }
+                                                
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                    }
+
+                    DispatchQueue.main.async {
+                        completion(annotations)
                     }
                 } else {
                     print("JSON response format is not as expected.")

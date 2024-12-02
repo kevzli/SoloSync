@@ -89,9 +89,10 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
         self.images = []
         self.comments = []
         self.socialMediaHandles = []
-
+      
         for locationInfo in AllAnnotations {
             if coordinate.latitude == locationInfo.coordinate.latitude && coordinate.longitude == locationInfo.coordinate.longitude {
+                print(locationInfo)
                 if let image = locationInfo.image {
                     self.images.append(image)
                 }

@@ -9,7 +9,9 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    @State private var position = MapCameraPosition.automatic
+    @ObservedObject var locationManager = LocationManager.shared
+    
+    @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var mapSelection: MKMapItem?
 //    @Namespace private var locationSpace
 
@@ -20,6 +22,9 @@ struct ContentView: View {
     @State private var showDetails: Bool = false
     @State private var lookAroundScene: MKLookAroundScene?
     
+    @State private var routeDisplaying: Bool = false
+    @State private var route: MKRoute?
+    
 //    @State private var searchResults = [SearchResult]()
 
 //    @State private var selectedLocation: SearchResult?
@@ -27,7 +32,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            Map(position: $position, selection: $mapSelection) {
+            Map(position: $cameraPosition, selection: $mapSelection) {
                 
 //                ForEach(searchResults) { result in
 //                    Marker(coordinate: result.location) {
@@ -41,12 +46,23 @@ struct ContentView: View {
                     
                 }
                 
+                if let route {
+                    MapPolyline(route.polyline)
+                        .stroke(.blue, lineWidth: 7)
+                }
+                
                 UserAnnotation()
             }
             .mapControls {
                 MapCompass()
                 MapUserLocationButton()
                 MapPitchToggle()
+                MapScaleView()
+            }
+            .onAppear {
+                if let userLocation = locationManager.userLocation?.coordinate {
+                    cameraPosition = .region(MKCoordinateRegion.myRegion(for: userLocation))
+                }
             }
 
 //            .onChange(of: selectedLocation) {
@@ -63,15 +79,13 @@ struct ContentView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
             .searchable(text: $searchText, isPresented: $showSearch)
-            .sheet(isPresented: $showDetails) {
-                
-            } content: {
+            .sheet(isPresented: $showDetails, content: {
                 MapDetails()
                     .presentationDetents([.height(300)])
                     .presentationBackgroundInteraction(.enabled(upThrough: .height(300)))
                     .presentationCornerRadius(25)
                     .interactiveDismissDisabled(true)
-            }
+            })
     //        .sheet(isPresented: $isSheetPresented) {
     //            SheetView(searchResults: $searchResults)
     //        }
@@ -96,6 +110,7 @@ struct ContentView: View {
         .onSubmit(of: .search) {
             Task {
                 guard !searchText.isEmpty else { return }
+                cameraPosition = .automatic
                 await searchPlaces()
             }
         }
@@ -103,6 +118,9 @@ struct ContentView: View {
             if !showSearch {
                 searchBarResults.removeAll(keepingCapacity: false)
                 showDetails = false
+                withAnimation(.snappy) {
+                    cameraPosition = .automatic
+                }
             }
         }
         .onChange(of: mapSelection) { oldValue, newValue in
@@ -125,14 +143,26 @@ struct ContentView: View {
             }
             .frame(height: 200)
             .clipShape(.rect(cornerRadius: 15))
-            
-            Button("Get Directions") {
-                
+            .overlay(alignment: .topTrailing) {
+                Button(action: {
+                    showDetails = false
+                    withAnimation(.snappy) {
+                        mapSelection = nil
+                    }
+                }, label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title)
+                        .foregroundStyle(.black)
+                        .background(.white, in: .circle)
+                })
+                .padding(10)
             }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(.blue.gradient, in: .rect(cornerRadius: 15))
+            
+            Button("Get Directions", action: fetchRoute)
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(.blue.gradient, in: .rect(cornerRadius: 15))
             
         }
         .padding(15)
@@ -157,8 +187,38 @@ struct ContentView: View {
             }
         }
     }
+    
+    func fetchRoute() {
+        let request = MKDirections.Request()
+        request.source = .init(placemark: .init(coordinate: locationManager.userLocation?.coordinate ?? CLLocationCoordinate2D.defaultLocation))
+        request.destination = mapSelection
+        
+        Task {
+            let result = try? await MKDirections(request: request).calculate()
+            route = result?.routes.first
+            
+            withAnimation(.snappy) {
+                routeDisplaying = true
+            }
+        }
+    }
 }
 
 #Preview {
     ContentView()
 }
+
+extension CLLocationCoordinate2D {
+    static var defaultLocation: CLLocationCoordinate2D {
+        return .init(latitude: +37.78583400, longitude: -122.40641700)
+    }
+}
+
+extension MKCoordinateRegion {
+    static func myRegion(for userLocation: CLLocationCoordinate2D?) -> MKCoordinateRegion {
+        let center = userLocation ?? .defaultLocation
+        return MKCoordinateRegion(center: center, latitudinalMeters: 10000, longitudinalMeters: 10000)
+    }
+}
+
+

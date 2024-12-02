@@ -87,22 +87,22 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
             return
         }
         
-        LocationInfoManager.shared.fetchAllAnnotations { [weak self] annotations in
-            let matchingAnnotations = annotations.filter {
-                $0.coordinate.latitude == coordinate.latitude && $0.coordinate.longitude == coordinate.longitude
-            }
-            
-            DispatchQueue.main.async{
-                self?.images = matchingAnnotations.compactMap { $0.image }
-                self?.comments = matchingAnnotations.map { $0.note }
-                self?.socialMediaHandles = matchingAnnotations.map { $0.socialMedia }
-                
-                self?.updateImageStackView()
-                self?.commentsTableView.reloadData()
+        self.images = []
+        self.comments = []
+        self.socialMediaHandles = []
 
+        for locationInfo in AllAnnotations {
+            if coordinate.latitude == locationInfo.coordinate.latitude && coordinate.longitude == locationInfo.coordinate.longitude {
+                if let image = locationInfo.image {
+                    self.images.append(image)
+                }
+                self.comments.append(locationInfo.note)
+                self.socialMediaHandles.append(locationInfo.socialMedia)
             }
-            
         }
+
+        self.updateImageStackView()
+        self.commentsTableView.reloadData()
         
     }
     

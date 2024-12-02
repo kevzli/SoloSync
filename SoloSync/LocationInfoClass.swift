@@ -16,7 +16,7 @@ extension NSMutableData {
         }
     }
 }
-
+var AllAnnotations: [LocationInfo] = []
 struct LocationInfo {
     var coordinate: CLLocationCoordinate2D
     var note: String

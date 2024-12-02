@@ -99,6 +99,7 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
                 
                 self?.updateImageStackView()
                 self?.commentsTableView.reloadData()
+
             }
             
         }
@@ -107,7 +108,7 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
     
     private func updateImageStackView() {
         imageStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-            
+
         for i in 0..<min(3, images.count) {
             let imageView = UIImageView()
             imageView.image = images[i]

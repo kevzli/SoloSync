@@ -108,49 +108,59 @@ class LocationInfoManager {
             do {
                 if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                     var annotations: [LocationInfo] = []
+                    var pendingImages = jsonArray.count
+
                     for json in jsonArray {
+                        var loadedImage: UIImage? = nil
                         if let coordinateString = json["coordinate"] as? String,
                            let note = json["note"] as? String,
                            let note_id = json["note_id"] as? Int,
-                           let creatorId = json["user_id"] as? Int
-                           
-                        {
+                           let creatorId = json["user_id"] as? Int {
+
                             let social = json["socialMedia"] as? String
                             let imageURL = json["imageurl"] as? String
-                            // Todo: Add reading image
-                            if let imageURL = imageURL {
-                                fetchImage(ImgUrl: imageURL) { image in
-                                    if image != nil {
-                                        DispatchQueue.main.async {
-                                            // Todo: Add ImageView
-                                            print("fetch correct")
-                                        }
-                                    } else {
-                                        print("Failed to fetch the image from URL:", imageURL)
-                                    }
-                                }
-                            }
-                            // Parse the coordinate
+
                             let coordinates = coordinateString.split(separator: ",")
                             if let latitude = Double(coordinates[0]), let longitude = Double(coordinates[1]) {
                                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                                
-                                // Create LocationInfo object
-                                let locationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: social ?? "Nothing", creator: creatorId, noteId: note_id)
-                                
-                                annotations.append(locationInfo)
+
+                                if let imageURL = imageURL {
+                                    fetchImage(ImgUrl: imageURL) { image in
+                                        if image != nil {
+                                            loadedImage = image
+                                        } else {
+                                            print("Failed to fetch the image from URL:", imageURL)
+                                        }
+
+                                        let locationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: social ?? "Nothing", image: loadedImage, creator: creatorId, noteId: note_id)
+                                        annotations.append(locationInfo)
+
+                                        pendingImages -= 1
+                                        if pendingImages == 0 {
+                                            DispatchQueue.main.async {
+                                                completion(annotations)
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    let locationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: social ?? "Nothing", image: loadedImage, creator: creatorId, noteId: note_id)
+                                    annotations.append(locationInfo)
+
+                                    pendingImages -= 1
+                                    if pendingImages == 0 {
+                                        DispatchQueue.main.async {
+                                            completion(annotations)
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                    
-                    DispatchQueue.main.async {
-                        completion(annotations)
                     }
                 } else {
                     print("JSON response format is not as expected.")
                 }
             } catch {
-                print("Error parsing annotations:", error)
+                print("Failed to parse JSON:", error)
             }
         }.resume()
     }

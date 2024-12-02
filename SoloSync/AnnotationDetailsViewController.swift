@@ -123,8 +123,26 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
     @objc private func openAddInfoView() {
         let addInfoViewController = AddInfoViewController()
         addInfoViewController.coordinate = coordinate
+        
+        addInfoViewController.completion = { [weak self] newLocationInfo in
+            guard let self = self else { return }
+
+            AllAnnotations.append(newLocationInfo)
+
+            self.comments.append(newLocationInfo.note)
+            self.socialMediaHandles.append(newLocationInfo.socialMedia)
+            if let image = newLocationInfo.image {
+                self.images.append(image)
+            }
+
+            self.updateImageStackView()
+            self.commentsTableView.reloadData()
+            LocationInfoManager.shared.saveLocationInfoToAPI(newLocationInfo)
+        }
+        
         present(addInfoViewController, animated: true)
     }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count

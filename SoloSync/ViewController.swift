@@ -96,8 +96,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 
         if let matchingAnnotation = annotations.first(where: {
-            abs($0.coordinate.latitude - coordinate.latitude) < 0.1 &&
-            abs($0.coordinate.longitude - coordinate.longitude) < 0.1
+            abs($0.coordinate.latitude - coordinate.latitude) < 0.2 &&
+            abs($0.coordinate.longitude - coordinate.longitude) < 0.2
         }) {
             openAnnotationDetails(for: matchingAnnotation)
             print("debug1")
@@ -125,6 +125,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             guard let self = self else { return }
             self.annotations.append(locationInfo)
             self.addAnnotation(for: locationInfo)
+            AllAnnotations.append(locationInfo)
             LocationInfoManager.shared.saveLocationInfoToAPI(locationInfo)
         }
 

@@ -126,7 +126,11 @@ class LocationInfoManager {
                                             if let image = image {
                                                 if let index = annotations.firstIndex(where: { $0.noteId == note_id }) {
                                                     annotations[index].image = image
-                                                    AllAnnotations[index].image = image
+                                                    if index < AllAnnotations.count {
+                                                                            AllAnnotations[index].image = image
+                                                                        } else {
+                                                                            print("Warning: Index out of bounds for AllAnnotations")
+                                                                        }
                                                 }
                                                 
                                             }

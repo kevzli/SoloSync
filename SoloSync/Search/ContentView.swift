@@ -78,14 +78,40 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+            .toolbar(routeDisplaying ? .hidden : .visible, for: .navigationBar)
             .searchable(text: $searchText, isPresented: $showSearch)
-            .sheet(isPresented: $showDetails, content: {
+            .sheet(isPresented: $showDetails, onDismiss: {
+                withAnimation(.snappy) {
+                    if let boundingRect = route?.polyline.boundingMapRect, routeDisplaying {
+                        cameraPosition = .rect(boundingRect)
+                    }
+                }
+            }, content: {
                 MapDetails()
                     .presentationDetents([.height(300)])
                     .presentationBackgroundInteraction(.enabled(upThrough: .height(300)))
                     .presentationCornerRadius(25)
                     .interactiveDismissDisabled(true)
             })
+            .safeAreaInset(edge: .bottom) {
+                if routeDisplaying {
+                    Button("End Route") {
+                        withAnimation(.snappy) {
+                            routeDisplaying = false
+                            showDetails = true
+//                            mapSelection = routeDestination
+                            route = nil
+                            cameraPosition = .automatic
+                        }
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(.red.gradient, in: .rect(cornerRadius: 15))
+                    .padding()
+                    .background(.ultraThinMaterial)
+                }
+            }
     //        .sheet(isPresented: $isSheetPresented) {
     //            SheetView(searchResults: $searchResults)
     //        }
@@ -171,7 +197,6 @@ struct ContentView: View {
     func searchPlaces() async {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchText
-//        request.region = .myRegion
         let results = try? await MKLocalSearch(request: request).start()
         searchBarResults = results?.mapItems ?? []
         
@@ -199,6 +224,7 @@ struct ContentView: View {
             
             withAnimation(.snappy) {
                 routeDisplaying = true
+                showDetails = false
             }
         }
     }

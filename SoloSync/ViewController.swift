@@ -94,12 +94,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 
         if let matchingAnnotation = annotations.first(where: {
-            $0.coordinate.latitude == coordinate.latitude &&
-            $0.coordinate.longitude == coordinate.longitude
+            abs($0.coordinate.latitude - coordinate.latitude) < 0.1 &&
+            abs($0.coordinate.longitude - coordinate.longitude) < 0.1
         }) {
             openAnnotationDetails(for: matchingAnnotation)
+            print("debug1")
         } else {
             addInfo(for: coordinate)
+            print("debug2")
         }
     }
     

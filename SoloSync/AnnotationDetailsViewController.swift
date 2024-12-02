@@ -17,7 +17,6 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
     var comments: [String] = []
     var socialMediaHandles: [String] = []
     
-//    private var imageView: UIImageView!
     private var addImageButton: UIButton!
     private var commentsTableView: UITableView!
     private var imageStackView: UIStackView!
@@ -39,7 +38,6 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
         imageStackView.distribution = .fillEqually
         imageStackView.spacing = 6
 
-
         view.addSubview(imageStackView)
 
         NSLayoutConstraint.activate([
@@ -52,18 +50,18 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
     
     private func setupAddImageButton() {
         addImageButton = UIButton(type: .system)
-            addImageButton.translatesAutoresizingMaskIntoConstraints = false
-            addImageButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .bold)), for: .normal)
-            addImageButton.tintColor = .systemBlue
-            addImageButton.addTarget(self, action: #selector(openAddInfoView), for: .touchUpInside)
-            view.addSubview(addImageButton)
-            
-            NSLayoutConstraint.activate([
-                addImageButton.topAnchor.constraint(equalTo: imageStackView.bottomAnchor, constant: 15),
-                addImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                addImageButton.widthAnchor.constraint(equalToConstant: 60),
-                addImageButton.heightAnchor.constraint(equalToConstant: 60)
-            ])
+        addImageButton.translatesAutoresizingMaskIntoConstraints = false
+        addImageButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .bold)), for: .normal)
+        addImageButton.tintColor = .systemBlue
+        addImageButton.addTarget(self, action: #selector(openAddInfoView), for: .touchUpInside)
+        view.addSubview(addImageButton)
+        
+        NSLayoutConstraint.activate([
+            addImageButton.topAnchor.constraint(equalTo: imageStackView.bottomAnchor, constant: 15),
+            addImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addImageButton.widthAnchor.constraint(equalToConstant: 60),
+            addImageButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
     }
     
     private func setupCommentsTableView() {
@@ -71,7 +69,8 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
         commentsTableView.translatesAutoresizingMaskIntoConstraints = false
         commentsTableView.delegate = self
         commentsTableView.dataSource = self
-        commentsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "CommentCell")
+        commentsTableView.separatorStyle = .none // Remove default separators
+        commentsTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell") // Register custom cell
         view.addSubview(commentsTableView)
         
         NSLayoutConstraint.activate([
@@ -99,11 +98,8 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
                 
                 self?.updateImageStackView()
                 self?.commentsTableView.reloadData()
-
             }
-            
         }
-        
     }
     
     private func updateImageStackView() {
@@ -131,9 +127,11 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath)
-            cell.textLabel?.text = "\(comments[indexPath.row]) \n Social: \(socialMediaHandles[indexPath.row])"
-            cell.textLabel?.numberOfLines = 0
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as? CommentCell else {
+            return UITableViewCell()
         }
+        
+        cell.configure(comment: comments[indexPath.row], socialMediaHandle: socialMediaHandles[indexPath.row])
+        return cell
+    }
 }

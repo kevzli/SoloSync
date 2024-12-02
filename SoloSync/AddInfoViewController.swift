@@ -22,6 +22,7 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupSaveButton()
         
     }
+    
     private func setSocialMediaView(){
         socialMediaTextView = UITextView()
         socialMediaTextView.translatesAutoresizingMaskIntoConstraints = false

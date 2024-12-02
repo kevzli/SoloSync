@@ -43,7 +43,7 @@ class LocationInfoManager {
         
         let coordinateString = "\(locationInfo.coordinate.latitude),\(locationInfo.coordinate.longitude)"
         
-        // Create a unique name for the image if it exists, otherwise default to nil
+        //create a unique name for the image
         var imageName: String? = nil
         let imageData: Data? = nil
     
@@ -52,17 +52,16 @@ class LocationInfoManager {
             dateFormatter.dateFormat = "yyyyMMddHHmmss"
             let timestamp = dateFormatter.string(from: Date())
             
-            // Combine user ID, coordinate string, and timestamp for the image name
+            //combine user ID, coordinate string, and timestamp
             imageName = "\(userId)_\(coordinateString)_\(timestamp).jpg"
             uploadImageTPHP(image: image, imageName: imageName!)
         }
         
-        // Asynchronously call `shareNote` at the end of this function
+        //asynchronously call
         DispatchQueue.global().async {
             let imageNameToUse = imageName ?? ""
             let imageDataToUse = imageData
             
-            // Pass imageData along with other parameters to `shareNote`
             shareNote(user_id: userId, coordinate: coordinateString, note: locationInfo.note, imageName: imageNameToUse, socialMediaString: locationInfo.socialMedia, imageUpload: imageDataToUse) { result in
                 DispatchQueue.main.async {
                     switch result {
@@ -86,7 +85,6 @@ class LocationInfoManager {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        // Add body data if necessary
         request.httpBody = try? JSONSerialization.data(withJSONObject: [:], options: [])
         
         URLSession.shared.dataTask(with: request) { data, response, error in

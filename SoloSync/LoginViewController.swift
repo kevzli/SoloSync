@@ -13,6 +13,7 @@ class LoginViewController: UIViewController {
     private var usernameTextField: UITextField!
     private var passwordTextField: UITextField!
     private var loginButton: UIButton!
+    
     private var signupButton: UIButton!
     private var backgroundView: UIView!
 
@@ -23,9 +24,11 @@ class LoginViewController: UIViewController {
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 1, y: 1)
         gradientLayer.frame = view.bounds
+        
         let backgroundView = UIView(frame: view.bounds)
         backgroundView.layer.addSublayer(gradientLayer)
         view.addSubview(backgroundView)
+        
         view.sendSubviewToBack(backgroundView)
         setup()
     }
@@ -34,9 +37,9 @@ class LoginViewController: UIViewController {
         usernameTextField = UITextField()
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         usernameTextField.placeholder = "Email"
+        usernameTextField.autocapitalizationType = .none
         usernameTextField.borderStyle = .roundedRect
         usernameTextField.keyboardType = .emailAddress
-        usernameTextField.autocapitalizationType = .none
         view.addSubview(usernameTextField)
         
         passwordTextField = UITextField()
@@ -51,6 +54,7 @@ class LoginViewController: UIViewController {
         loginButton.setTitle("Login", for: .normal)
         loginButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         loginButton.backgroundColor = .systemBlue
+        
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 10
         loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
@@ -59,6 +63,7 @@ class LoginViewController: UIViewController {
         signupButton = UIButton(type: .system)
         signupButton.translatesAutoresizingMaskIntoConstraints = false
         signupButton.setTitle("Sign Up", for: .normal)
+        
         signupButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         signupButton.backgroundColor = .systemBlue
         signupButton.setTitleColor(.white, for: .normal)
@@ -102,20 +107,18 @@ class LoginViewController: UIViewController {
         
         let semaphore = DispatchSemaphore(value: 0)
         
-        // Call the login function
+        //call login
         login(user_email: email, user_password: password) { result in
             loginResult = result
             semaphore.signal()
         }
         
-        // Wait for the semaphore signal
         semaphore.wait()
         
-        // Handle the login result
         switch loginResult {
         case .success(let message):
-            print(message) // Login successful message
-            self.navigateToMainApp() // Navigate to the main app
+            print(message)
+            self.navigateToMainApp()
         case .failure(let error):
             print("Login failed: \(error.localizedDescription)")
             showAlert(title: "Login Failed", message: "Incorrect password")
@@ -141,11 +144,11 @@ class LoginViewController: UIViewController {
         
         semaphore.wait()
         
-        // Handle the login result
+        //handle login
         switch SignupResult {
         case .success(let message):
-            print(message) // Login successful message
-            self.navigateToMainApp() // Navigate to the main app
+            print(message)
+            self.navigateToMainApp()
         case .failure(let error):
             print("Signup failed: \(error.localizedDescription)")
             showAlert(title: "SignUo Failed", message: error.localizedDescription)
@@ -169,7 +172,6 @@ class LoginViewController: UIViewController {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
-            // Instantiate the view controller with the correct Storyboard ID
             if let mainTabBarController = storyboard.instantiateViewController(withIdentifier: "MainTabBarController") as? UITabBarController {
                 mainTabBarController.modalPresentationStyle = .fullScreen
                 self.present(mainTabBarController, animated: true)

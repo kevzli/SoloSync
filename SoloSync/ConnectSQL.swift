@@ -35,11 +35,10 @@ func insertUser(name: String, password: String, email: String, completion: @esca
         }
         
         if let data = data {
-            // Try to parse the response as JSON
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     if let message = jsonResponse["message"] as? String {
-                        completion(.success(message)) // Return success with the message
+                        completion(.success(message))
                     } else {
                         let error = NSError(domain: "ResponseError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No message in response"])
                         completion(.failure(error))
@@ -58,7 +57,6 @@ func insertUser(name: String, password: String, email: String, completion: @esca
 }
 
 func shareNote(user_id: Int, coordinate: String, note: String, imageName: String, socialMediaString: String,imageUpload: Data?, completion: @escaping (Result<[String: Any], Error>) -> Void) {
-    // Part 1: Share Note
     guard let url = URL(string: "http://3.144.195.16:3000/share") else {
         print("Invalid URL")
         return
@@ -96,7 +94,7 @@ func shareNote(user_id: Int, coordinate: String, note: String, imageName: String
                 print("Raw response: \(responseString)")
             }
 
-            // Try to parse the response as JSON
+            //try to parse
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     completion(.success(jsonResponse))
@@ -115,27 +113,22 @@ func shareNote(user_id: Int, coordinate: String, note: String, imageName: String
 
 
 func uploadImageTPHP(image: UIImage, imageName: String) {
-    // Prepare the URL for your EC2 instance
     guard let url = URL(string: "http://ec2-3-144-195-16.us-east-2.compute.amazonaws.com/upload.php") else {
         print("Invalid URL")
         return
     }
-    
-    // Convert UIImage to JPEG data
+
     guard let imageData = image.jpegData(compressionQuality: 0.8) else {
         print("Unable to convert image to data")
         return
     }
-    
-    // Create the request with URL and HTTP method
+
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     
-    // Generate a unique boundary string for multipart/form-data
     let boundary = "Boundary-\(UUID().uuidString)"
     request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
     
-    // Build the multipart form data body
     var body = Data()
     body.append("--\(boundary)\r\n".data(using: .utf8)!)
     body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(imageName).jpg\"\r\n".data(using: .utf8)!)
@@ -143,10 +136,10 @@ func uploadImageTPHP(image: UIImage, imageName: String) {
     body.append(imageData)
     body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
     
-    // Add the body to the request
+    //add request
     request.httpBody = body
     
-    // Start the upload task
+    //upload
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         if let error = error {
             print("Error uploading image: \(error.localizedDescription)")
@@ -216,21 +209,19 @@ func login(user_email: String, user_password: String, completion: @escaping (Res
         }
         
         if let data = data {
-            // Print raw response data for debugging
             if let responseString = String(data: data, encoding: .utf8) {
                 print("Raw response: \(responseString)")
             }
             
-            // Try to parse the response as JSON
+            //parse as json
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     print("JSON Response: \(jsonResponse)")
                     
-                    // Check for token and userId in the response
+                    //check token, userid and username
                     if let token = jsonResponse["token"] as? String,
                        let userId = jsonResponse["userId"] as? Int,
                        let username = jsonResponse["username"] as? String{
-                        // Store token and user_id securely for future use
                         UserDefaults.standard.set(token, forKey: "userToken")
                         UserDefaults.standard.set(userId, forKey: "userId")
                         UserDefaults.standard.set(username, forKey: "userName")
@@ -264,7 +255,6 @@ func updateUsername(user_email: String, new_name: String) {
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
-    // Retrieve the token from UserDefaults
     if let token = UserDefaults.standard.string(forKey: "userToken") {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     } else {
@@ -290,7 +280,6 @@ func updateUsername(user_email: String, new_name: String) {
         
         if let data = data {
 
-            // Parse the JSON response
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     print("JSON Response: \(jsonResponse)")
@@ -330,7 +319,6 @@ func deleteNote(selectedNote:LocationInfo){
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
-    // Retrieve the token from UserDefaults
     if let token = UserDefaults.standard.string(forKey: "userToken") {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     } else {
@@ -355,12 +343,10 @@ func deleteNote(selectedNote:LocationInfo){
         }
         
         if let data = data {
-            // Print raw response data for debugging
             if let responseString = String(data: data, encoding: .utf8) {
                 print("Raw response: \(responseString)")
             }
             
-            // Parse the JSON response
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     print("JSON Response: \(jsonResponse)")

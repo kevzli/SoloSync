@@ -69,8 +69,8 @@ class AnnotationDetailsViewController: UIViewController, UITableViewDelegate, UI
         commentsTableView.translatesAutoresizingMaskIntoConstraints = false
         commentsTableView.delegate = self
         commentsTableView.dataSource = self
-        commentsTableView.separatorStyle = .none // Remove default separators
-        commentsTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell") // Register custom cell
+        commentsTableView.separatorStyle = .none
+        commentsTableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
         view.addSubview(commentsTableView)
         
         NSLayoutConstraint.activate([

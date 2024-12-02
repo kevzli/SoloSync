@@ -112,17 +112,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             present(annotationDetailsVC, animated: true)
         }
     
+    
     func addInfo(for coordinate: CLLocationCoordinate2D) {
         let addInfoViewController = AddInfoViewController()
-                addInfoViewController.coordinate = coordinate
-                present(addInfoViewController, animated: true) {
-                    if let locationInfo = LocationInfoManager.shared.currentLocationInfo {
-                        print("called")
-                        self.addAnnotation(for: locationInfo)
-                        LocationInfoManager.shared.saveLocationInfoToAPI(locationInfo)
-                    }
-                }
+        addInfoViewController.coordinate = coordinate
+
+        addInfoViewController.completion = { [weak self] locationInfo in
+            guard let self = self else { return }
+            self.annotations.append(locationInfo)
+            self.addAnnotation(for: locationInfo)
+            LocationInfoManager.shared.saveLocationInfoToAPI(locationInfo)
         }
+
+        present(addInfoViewController, animated: true)
+    }
+
     
     func addAnnotation(for locationInfo: LocationInfo) {
             let annotation = MKPointAnnotation()

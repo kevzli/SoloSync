@@ -9,7 +9,8 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
     var imageView: UIImageView!
     var addImageButton: UIButton!
     var socialMediaTextView: UITextView!
-
+    var completion: ((LocationInfo) -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,8 +20,8 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupNoteTextView()
         setSocialMediaView()
         setupSaveButton()
+        
     }
-    
     private func setSocialMediaView(){
         socialMediaTextView = UITextView()
         socialMediaTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -128,8 +129,16 @@ class AddInfoViewController: UIViewController, UIImagePickerControllerDelegate, 
         guard let coordinate = coordinate, let note = noteTextView.text, !note.isEmpty, note != "Add Note" else {
             return
         }
-        let socialMeida = socialMediaTextView.text ?? "Nothing"
-        LocationInfoManager.shared.currentLocationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: socialMeida ,image: selectedImage)
+        let socialMedia = socialMediaTextView.text ?? "Nothing"
+        LocationInfoManager.shared.currentLocationInfo = LocationInfo(coordinate: coordinate, note: note, socialMedia: socialMedia ,image: selectedImage)
+        
+        let locationInfo = LocationInfo(
+                    coordinate: coordinate,
+                    note: note,
+                    socialMedia: socialMedia,
+                    image: selectedImage
+                )
+        completion?(locationInfo)
         
         dismiss(animated: true, completion: nil)
     }

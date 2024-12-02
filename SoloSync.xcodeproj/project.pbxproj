@@ -36,6 +36,7 @@
 		F24ECC8A2CD89D9A00A0A4EF /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F24ECC892CD89D9A00A0A4EF /* Base */; };
 		F24ECC8C2CD89D9A00A0A4EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F24ECC8B2CD89D9A00A0A4EF /* Assets.xcassets */; };
 		F24ECC8F2CD89D9A00A0A4EF /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F24ECC8E2CD89D9A00A0A4EF /* Base */; };
+		F2E362AF2CFD6672000EDBBB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E362AE2CFD6672000EDBBB /* CommentCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		F24ECC8B2CD89D9A00A0A4EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F24ECC8E2CD89D9A00A0A4EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F24ECC902CD89D9A00A0A4EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F2E362AE2CFD6672000EDBBB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				F21886392CDAEDDB001B10C9 /* AddInfoViewController.swift */,
 				F24ECC862CD89D9900A0A4EF /* ViewController.swift */,
 				F22A59EC2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift */,
+				F2E362AE2CFD6672000EDBBB /* CommentCell.swift */,
 				F20212D42CDC749D00AC6C30 /* LocationInfoClass.swift */,
 				29375C5E2CDC7F49000D1584 /* ConnectSQL.swift */,
 				F208B13F2CD99EB9003D7F80 /* SelectedPoint.swift */,
@@ -229,6 +232,7 @@
 				F24ECC832CD89D9900A0A4EF /* AppDelegate.swift in Sources */,
 				7BC8A3E92CFCE99E00AA1C28 /* LocationManager.swift in Sources */,
 				7BD37FBF2CFB2B4F002E1557 /* ContentView.swift in Sources */,
+				F2E362AF2CFD6672000EDBBB /* CommentCell.swift in Sources */,
 				6FE8E2932CFC3DCC009B6F92 /* RouteDetailViewController.swift in Sources */,
 				F24ECC852CD89D9900A0A4EF /* SceneDelegate.swift in Sources */,
 				F22A59ED2CFB284C00FBE4CD /* AnnotationDetailsViewController.swift in Sources */,
